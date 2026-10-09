@@ -1,4 +1,9 @@
 
+//// Quick
+- add year info folders
+
+
+-----------------------------------------------------------
 
 //// Major  
 
@@ -8,9 +13,10 @@ no prompt
 - feat: support web books e.g. https://ethereum.org/developers/docs/intro-to-ethereum/
 
 - eth whitepaper folder
---------------------------------
 
-## Done
+-----------------------------------------------------------
+
+/// Done
 
 Major
 + feat: create audio per chapter

@@ -1,0 +1,28 @@
+Source: User-provided Ethereum.org article, "Nodes as a service" (10.3-Nodes as a service.md)
+
+Article explanations were retained. Markdown styling, heading anchors, and hyperlink destination URLs were removed; link labels were retained where they were already part of the explanatory narration. Lists and navigation references were converted into spoken prose.
+
+Items excluded or converted:
+
+1. YAML front matter at the top of the file. This is source metadata, not article narration.
+   Original text excerpt: "---\ntitle: Nodes as a service\ndescription: An entry-level overview of node services, the pros and cons, and popular providers.\nlang: en\nsidebarDepth: 2\n---"
+
+2. The introduction section was summarized into a single paragraph rather than kept as a longer editorial introduction.
+   Original text excerpt: "## Introduction {#introduction}\nRunning your own [Ethereum node](/developers/docs/nodes-and-clients/#what-are-nodes-and-clients) can be challenging, especially when getting started or while scaling fast. There are a [number of services](#popular-node-services) that run optimized node infrastructures for you..."
+
+3. The list of popular node services was not retained because the source uses an anchor-only navigation reference rather than a direct informational list in the article body.
+   Original text excerpt: "There are a [number of services](#popular-node-services) that run optimized node infrastructures for you..."
+
+4. The phrase "Read more on running a node" and the related link were omitted as a navigation prompt, not article narration.
+   Original text excerpt: "[Read more on running a node](/developers/docs/nodes-and-clients/run-a-node/)."
+
+5. The article's discussion of node service providers and API integration was retained in summary form; the explicit list of provider names in the source was not read as a full directory.
+   Original text excerpt: "Some services offer you your own dedicated node...\nAlmost all node services are extremely easy to integrate with..."
+
+6. The article's anchor-based "popular node services" section was not included because it is not a written article section in the provided source excerpt.
+   Original text excerpt: "#popular-node-services"
+
+7. The final sentence referencing related benefits-of-running-your-own-node content was summarized without keeping the raw link text.
+   Original text excerpt: "Read more about the [benefits of running your own node](/developers/docs/nodes-and-clients/#benefits-to-you)."
+
+No explanatory article section was intentionally omitted. Audio and SRT generation were not performed.

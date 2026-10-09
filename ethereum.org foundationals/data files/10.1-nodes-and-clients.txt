@@ -1,0 +1,125 @@
+Nodes and clients
+
+Ethereum is a distributed network of computers, known as nodes, running software that can verify blocks and transaction data. The software must be run on your computer to turn it into an Ethereum node. There are two separate pieces of software, known as clients, required to form a node.
+
+Prerequisites
+
+You should understand the concept of a peer-to-peer network and the basics of the EVM before diving deeper and running your own instance of an Ethereum client. You should also understand the introduction to Ethereum.
+
+If you are new to the topic of nodes, we recommend first checking out our user-friendly introduction to running an Ethereum node.
+
+What are nodes and clients?
+
+A node is any instance of Ethereum client software that is connected to other computers also running Ethereum software, forming a network. A client is an implementation of Ethereum that verifies data against the protocol rules and keeps the network secure. A node has to run two clients: a consensus client and an execution client.
+
+The execution client, also known as the Execution Engine, EL client, or formerly the Eth1 client, listens to new transactions broadcasted in the network, executes them in the EVM, and holds the latest state and database of all current Ethereum data.
+
+The consensus client, also known as the Beacon Node, CL client, or formerly the Eth2 client, implements the proof-of-stake consensus algorithm, which enables the network to achieve agreement based on validated data from the execution client. There is also a third piece of software, known as a validator, that can be added to the consensus client, allowing a node to participate in securing the network.
+
+These clients work together to keep track of the head of the Ethereum chain and allow users to interact with the Ethereum network. The modular design with multiple pieces of software working together is called encapsulated complexity. This approach made it easier to execute The Merge seamlessly, makes client software easier to maintain and develop, and enables the reuse of individual clients, for example, in the layer two ecosystem.
+
+Client diversity
+
+Both execution clients and consensus clients exist in a variety of programming languages developed by different teams.
+
+Multiple client implementations can make the network stronger by reducing its dependency on a single codebase. The ideal goal is to achieve diversity without any client dominating the network, thereby eliminating a potential single point of failure. The variety of languages also invites a broader developer community and allows them to create integrations in their preferred language.
+
+Learn more about client diversity.
+
+What these implementations have in common is that they all follow a single specification. Specifications dictate how the Ethereum network and blockchain functions. Every technical detail is defined, and specifications can be found in the Ethereum Yellow Paper, execution specs, consensus specs, and EIPs implemented in various network upgrades.
+
+Tracking nodes in the network
+
+Multiple trackers offer a real-time overview of nodes in the Ethereum network. Note that due to the nature of decentralized networks, these crawlers can only provide a limited view of the network and might report different results.
+
+The list includes Etherscan's map of nodes, Ethernodes by Bitfly, Nodewatch by Chainsafe, Monitoreth, and weekly network health reports from ProbeLab.
+
+Node types
+
+If you want to run your own node, you should understand that there are different types of node that consume data differently. In fact, clients can run three different types of nodes: light, full, and archive. There are also options of different sync strategies which enable faster synchronization time. Synchronization refers to how quickly it can get the most up-to-date information on Ethereum's state.
+
+Full node
+
+Full nodes do a block-by-block validation of the blockchain, including downloading and verifying the block body and state data for each block. There are different classes of full node. Some start from the genesis block and verify every single block in the entire history of the blockchain. Others start their verification at a more recent block that they trust to be valid, such as Geth's snap sync. Regardless of where the verification starts, full nodes only keep a local copy of relatively recent data, typically the most recent 128 blocks, allowing older data to be deleted to save disk space. Older data can be regenerated when it is needed.
+
+Full nodes store full blockchain data, although this is periodically pruned so a full node does not store all state data back to genesis. They participate in block validation, verify all blocks and states, and can retrieve or regenerate state data from local storage or snapshots. They also serve the network and provide data on request.
+
+Archive node
+
+Archive nodes are full nodes that verify every block from genesis and never delete any of the downloaded data.
+
+They store everything kept in the full node and build an archive of historical states. This is needed if you want to query something like an account balance at block number four million, or simply and reliably test your own transactions set without validating them using tracing.
+
+This data represents units of terabytes, which makes archive nodes less attractive for average users but can be handy for services like block explorers, wallet vendors, and chain analytics.
+
+Syncing clients in any mode other than archive will result in pruned blockchain data. This means there is no archive of all historical states, but the full node is able to build them on demand.
+
+Light node
+
+Instead of downloading every block, light nodes only download block headers. These headers contain summary information about the contents of the blocks. Any other information the light node requires gets requested from a full node. The light node can then independently verify the data they receive against the state roots in the block headers.
+
+Light nodes enable users to participate in the Ethereum network without the powerful hardware or high bandwidth required to run full nodes. Eventually, light nodes might run on mobile phones or embedded devices. They do not participate in consensus, meaning they cannot be validators, but they can access the blockchain with the same functionality and security guarantees as a full node.
+
+Light clients are an area of active development for Ethereum, and we expect to see new light clients for the consensus layer and execution layer soon. There are also potential routes to providing light client data over the gossip network.
+
+Ethereum does not support a large population of light nodes yet, but light node support is an area expected to develop rapidly in the near future. In particular, clients like Nimbus, Helios, and LodeStar are currently heavily focused on light nodes.
+
+Why should I run an Ethereum node?
+
+Running a node allows you to directly, trustlessly, and privately use Ethereum while supporting the network by keeping it more robust and decentralized.
+
+Benefits to you
+
+Running your own node enables you to use Ethereum in a private, self-sufficient, and trustless manner. You do not need to trust the network because you can verify the data yourself with your client. Do not trust, verify, is a popular blockchain mantra.
+
+Your node verifies all the transactions and blocks against consensus rules by itself. This means you do not have to rely on any other nodes in the network or fully trust them.
+
+You can use an Ethereum wallet with your own node. You can use dapps more securely and privately because you will not have to leak your addresses and balances to intermediaries. Everything can be checked with your own client.
+
+You can run and self-host other services which depend on data from Ethereum. For example, this might be a Beacon Chain validator, software like layer two, infrastructure, block explorers, payment processors, and more.
+
+You can provide your own custom RPC endpoints and even offer them publicly to the community to help them avoid big centralized providers.
+
+You can connect to your node using inter-process communications or rewrite the node to load your program as a plugin. This grants low latency, which helps when processing a lot of data using web3 libraries or when you need to replace your transactions as fast as possible.
+
+You can directly stake ETH to secure the network and earn rewards.
+
+Network benefits
+
+A diverse set of nodes is important for Ethereum's health, security, and operational resiliency.
+
+Full nodes enforce the consensus rules so they cannot be tricked into accepting blocks that do not follow them. This provides extra security because if all the nodes were light nodes, which do not do full verification, validators could attack the network.
+
+In case of an attack which overcomes the crypto-economic defenses of proof-of-stake, a social recovery can be performed by full nodes choosing to follow the honest chain.
+
+More nodes in the network result in a more diverse and robust network, the ultimate goal of decentralization, which enables a censorship-resistant and reliable system.
+
+Full nodes provide access to blockchain data for lightweight clients that depend on it. Light nodes do not store the whole blockchain; instead they verify data via the state roots in block headers. They can request more information from full nodes if needed.
+
+If you run a full node, the whole Ethereum network benefits from it, even if you do not run a validator.
+
+Running your own node
+
+Interested in running your own Ethereum client? For a beginner-friendly introduction, visit the run a node page to learn more. If you are more technical, dive into more details and options on how to spin up your own node.
+
+Alternatives
+
+Setting up your own node can cost time and resources, but you do not always need to run your own instance. In this case, you can use a third-party API provider. For an overview of using these services, check out nodes as a service.
+
+If somebody runs an Ethereum node with a public API in your community, you can point your wallets to a community node via custom RPC and gain more privacy than with some random trusted third party.
+
+On the other hand, if you run a client, you can share it with your friends who might need it.
+
+Execution clients
+
+The Ethereum community maintains multiple open-source execution clients, previously known as Eth1 clients or just Ethereum clients, developed by different teams using different programming languages. This makes the network stronger and more diverse. The ideal goal is to achieve diversity without any client dominating to reduce single points of failure.
+
+This table in the original article summarizes different execution clients, including Geth, Nethermind, Besu, Erigon, ethrex, Reth, and EthereumJS. The key point is that each client passes client tests and is actively maintained to stay updated with network upgrades.
+
+Each client has unique use cases and advantages, so you should choose one based on your own preferences. Diversity allows implementations to be focused on different features and user audiences.
+
+Consensus clients
+
+There are multiple consensus clients, previously known as Eth2 clients, to support the consensus upgrades. They are responsible for all consensus-related logic, including the fork-choice algorithm, processing attestations, and managing proof-of-stake rewards and penalties.
+
+The original article lists Lighthouse, Lodestar, Nimbus, Prysm, Teku, and Grandine as the main clients. The details are technical and client-specific, but the main point is that multiple consensus client implementations exist to support the same protocol and improve network resilience.

@@ -30,14 +30,14 @@ Extract the PDF text using pypdf:
 python -c "from pathlib import Path; from pypdf import PdfReader; folder=Path('bitcoin-whitepaper-audio'); pdf=folder/'bitcoin-whitepaper.pdf'; (folder/'bitcoin-whitepaper.txt').write_text('\n\n'.join((page.extract_text() or '').strip() for page in PdfReader(str(pdf)).pages), encoding='utf-8')"
 ```
 
-Create the MP3 and subtitles:
+Create the MP3:
 
 ```powershell
 python 'audio pause issue/prepare_text.py' `
 	'bitcoin-whitepaper-audio/bitcoin-whitepaper.txt' `
 	'bitcoin-whitepaper-audio/bitcoin-whitepaper-normalized.txt'
 
-edge-tts --voice en-US-AriaNeural --file 'bitcoin-whitepaper-audio/bitcoin-whitepaper-normalized.txt' --write-media 'bitcoin-whitepaper-audio/bitcoin-whitepaper-normalized.mp3' --write-subtitles 'bitcoin-whitepaper-audio/bitcoin-whitepaper-normalized.srt'
+edge-tts --voice en-US-EricNeural --file 'bitcoin-whitepaper-audio/bitcoin-whitepaper-normalized.txt' --write-media 'bitcoin-whitepaper-audio/bitcoin-whitepaper-normalized.mp3'
 ```
 
 Check that the PDF has 9 pages:

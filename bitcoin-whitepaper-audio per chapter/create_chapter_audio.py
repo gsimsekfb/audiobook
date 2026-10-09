@@ -67,15 +67,15 @@ def chapter_filename(title: str) -> str:
 
 
 # Entry point: read the PDF, split it into chapter sections, normalize the text,
-# and generate the matching text, audio, and subtitle files for each chapter.
+# and generate the matching text, audio files for each chapter.
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Create one MP3 and SRT per PDF chapter.")
+    parser = argparse.ArgumentParser(description="Create one MP3  per PDF chapter.")
     parser.add_argument("pdf", type=Path)
     parser.add_argument("output", type=Path)
     parser.add_argument("--pages", type=int, help="Only read the first N PDF pages.")
     parser.add_argument("--skip-chapters", type=int, default=0, help="Skip the first N detected chapters.")
     parser.add_argument("--max-chapters", type=int, help="Only create the first N detected chapters.")
-    parser.add_argument("--voice", default="en-US-AriaNeural")
+    parser.add_argument("--voice", default="en-US-EricNeural")
     args = parser.parse_args()
 
     pages = PdfReader(str(args.pdf)).pages
@@ -93,7 +93,6 @@ def main() -> None:
         filename = chapter_filename(title)
         text_path = args.output / f"{filename}.txt"
         audio_path = args.output / f"{filename}.mp3"
-        subtitles_path = args.output / f"{filename}.srt"
         text_path.write_text(normalize_text(chapter_text), encoding="utf-8")
         subprocess.run(
             [
@@ -106,8 +105,6 @@ def main() -> None:
                 str(text_path),
                 "--write-media",
                 str(audio_path),
-                "--write-subtitles",
-                str(subtitles_path),
             ],
             check=True,
         )

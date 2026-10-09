@@ -1,0 +1,28 @@
+Source: User-provided Ethereum.org article, "Client diversity" (10.2-client-diversity.md)
+
+Article explanations were retained. Markdown styling, heading anchors, and hyperlink destination URLs were removed; link labels were retained where they were already part of the explanatory narration. Visual diagrams and structured data were converted to spoken prose.
+
+Items excluded or converted:
+
+1. YAML front matter at the top of the file. This is source metadata, not article narration.
+   Original text excerpt: "---\ntitle: Client diversity\ndescription: A high level explanation of the importance of Ethereum client diversity.\nlang: en\nsidebarDepth: 2\n---"
+
+2. The pie charts for execution client and consensus client diversity were omitted because they are visual graphics.
+   Original text excerpt: "<PieChart\ndata={[\n{ name: \"Geth\", value: 41 },\n{ name: \"Nethermind\", value: 38 },\n{ name: \"Besu\", value: 16 },\n{ name: \"Erigon\", value: 3 },\n{ name: \"Reth\", value: 2 }\n]}\n/>\n\n<PieChart\ndata={[\n{ name: \"Lighthouse\", value: 42.71 },\n{ name: \"Prysm\", value: 30.91},\n{ name: \"Teku\", value: 13.86},\n{ name: \"Nimbus\", value: 8.74},\n{ name: \"Lodestar\", value: 2.67 },\n{ name: \"Grandine\", value: 1.04 },\n{ name: \"Other\", value: 0.07 }\n]}\n/>"
+
+3. The inline emoji and HTML anchor markup were removed as layout or markup elements, not spoken text.
+   Original text excerpt: "<Emoji text=\"🚨\" className=\"me-4\" /> Worse still, a critical bug in a client with a two-thirds majority could cause the chain to <a href=\"https://www.symphonious.net/2021/09/23/what-happens-if-beacon-chain-consensus-fails/\" target=\"_blank\">incorrectly split and finalize</a>, leading to a large set of validators getting stuck on an invalid chain."
+
+4. The list of minority client recommendations was summarized in prose rather than retained as a bullet list.
+   Original text excerpt: "### Execution clients {#execution-clients}\n- [Besu](https://www.hyperledger.org/use/besu)\n- [Nethermind](https://downloads.nethermind.io/)\n- [Erigon](https://github.com/ledgerwatch/erigon)\n- [Go-Ethereum](https://geth.ethereum.org/)\n- [Reth](https://reth.rs/)\n\n### Consensus clients {#consensus-clients}\n- [Nimbus](https://nimbus.team/)\n- [Lighthouse](https://github.com/sigp/lighthouse)\n- [Teku](https://consensys.io/teku)\n- [Lodestar](https://github.com/ChainSafe/lodestar)\n- [Prysm](https://prysm.offchainlabs.com/docs/)\n- [Grandine](https://docs.grandine.io/)"
+
+5. The "Further reading" section was omitted because it is a reference list, not narration.
+   Original text excerpt: "## Further reading {#further-reading}\n- [Client diversity on Ethereum's consensus layer](https://mirror.xyz/jmcook.eth/S7ONEka_0RgtKTZ3-dakPmAHQNPvuj15nh0YGKPFriA)\n- [Ethereum Merge: Run the majority client at your own peril!](https://dankradfeist.de/ethereum/2022/03/24/run-the-majority-client-at-your-own-peril.html) – _Dankrad Fiest, March 24 2022_\n- [Importance of client diversity](https://our.status.im/the-importance-of-client-diversity/)\n- [List of Ethereum node services](https://ethereumnodes.com/)\n- [\"Five Whys\" of the client diversity problem](https://notes.ethereum.org/@afhGjrKfTKmksTOtqhB9RQ/BJGj7uh08)\n- [Ethereum Diversity and How to Solve For It (YouTube)](https://www.youtube.com/watch?v=1hZgCaiqwfU)\n- [clientdiversity.org](https://clientdiversity.org/)"
+
+6. The "Related topics" section was omitted as navigation material, not article narration.
+   Original text excerpt: "## Related topics {#related-topics}\n- [Run an Ethereum node](/run-a-node/)\n- [Nodes and clients](/developers/docs/nodes-and-clients/)"
+
+7. The references to precise percentages and dates were retained only in summary form; the raw snapshot data was not read verbatim.
+   Original text excerpt: "The two pie charts above show snapshots ... The execution layer data were obtained from [supermajority.info](https://supermajority.info/) on 26-Oct-2025. Data for consensus clients was obtained from [Michael Sproul](https://github.com/sigp/blockprint)."
+
+No explanatory article section was intentionally omitted. Audio and SRT generation were not performed.

@@ -42,11 +42,10 @@ hard requirement.
 This works directly after installing `edge-tts`:
 
 ```powershell
-edge-tts --voice en-US-AriaNeural --text "A short paragraph becomes an audiobook." --write-media output.mp3
+edge-tts --voice en-US-EricNeural --text "A short paragraph becomes an audiobook." --write-media output.mp3
 ```
 
-The CLI also supports `--list-voices`, `--rate`, `--volume`, `--pitch`, and
-`--write-subtitles`.
+The CLI also supports `--list-voices`, `--rate`, `--volume`, `--pitch`.
 
 ### PDF to audio
 
@@ -56,7 +55,7 @@ Use `pypdf` to extract text, then pass the text file to `edge-tts`:
 ```powershell
 python -c "from pathlib import Path; from pypdf import PdfReader; Path('extracted.txt').write_text('\n'.join((p.extract_text() or '') for p in PdfReader('book.pdf').pages), encoding='utf-8')"
 
-edge-tts --voice en-US-AriaNeural --file extracted.txt --write-media audiobook.mp3
+edge-tts --voice en-US-EricNeural --file extracted.txt --write-media audiobook.mp3
 ```
 
 For a real audiobook, a thin wrapper would eventually add page/text cleanup,
@@ -94,8 +93,6 @@ Generated samples are included in this folder for listening and inspection:
 
 - [sample-edge-aria.mp3](sample-edge-aria.mp3)
 - [sample-pdf.mp3](sample-pdf.mp3)
-- [sample-edge-aria.srt](sample-edge-aria.srt)
-- [sample-pdf.srt](sample-pdf.srt)
 
 ## Sources
 

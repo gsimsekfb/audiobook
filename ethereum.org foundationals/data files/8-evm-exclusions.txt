@@ -1,0 +1,31 @@
+Source: User-provided Ethereum.org article, "Ethereum Virtual Machine (EVM)" (8-evm.md)
+
+Article explanations were retained. Markdown styling, heading anchors, and hyperlink destination URLs were removed; link labels were retained where they were already part of the explanatory narration. Lists were converted to spoken paragraphs.
+
+Items excluded or converted:
+
+1. YAML front matter at the top of the file: title, description, and language metadata. This is source metadata, not article narration.
+   Original text excerpt: "---\ntitle: Ethereum Virtual Machine (EVM)\ndescription: An introduction to the Ethereum virtual machine and how it relates to state, transactions, and smart contracts.\nlang: en\n---"
+
+2. In "From ledger to state machine": the diagram image and caption. These are visual materials and not spoken narration.
+   Original text excerpt: "![A diagram showing the make up of the EVM](./evm.png)\n_Diagram adapted from [Ethereum EVM illustrated](https://takenobu-hs.github.io/downloads/ethereum_evm_illustrated.pdf)_"
+
+3. In "The Ethereum state transition function": the fenced code block containing the formula. It was converted to spoken text as "Y of S and T equals S prime." to remain audible and readable.
+   Original text excerpt: "```\nY(S, T)= S'\n```"
+
+4. In "EVM instructions": the diagram showing where gas is needed for EVM operations and its caption. This is visual material.
+   Original text excerpt: "![A diagram showing where gas is needed for EVM operations](../gas/gas.png)\n_Diagrams adapted from [Ethereum EVM illustrated](https://takenobu-hs.github.io/downloads/ethereum_evm_illustrated.pdf)_"
+
+5. In "EVM implementations": the markdown bullet list of client implementations. It was converted into spoken prose rather than kept as raw list syntax.
+   Original text excerpt: "- [Py-EVM](https://github.com/ethereum/py-evm) - _Python_\n- [evmone](https://github.com/ethereum/evmone) - _C++_\n- [ethereumjs-vm](https://github.com/ethereumjs/ethereumjs-vm) - _JavaScript_\n- [revm](https://github.com/bluealloy/revm) - _Rust_"
+
+6. The "Further Reading" section was omitted because it is a reference list, not narration.
+   Original text excerpt: "## Further Reading {#further-reading}\n- [Ethereum Yellowpaper](https://ethereum.github.io/yellowpaper/paper.pdf)\n- [Jellopaper aka KEVM: Semantics of EVM in K](https://jellopaper.org/)\n- [The Beigepaper](https://github.com/chronaeon/beigepaper)\n- [Ethereum Virtual Machine Opcodes](https://www.ethervm.io/)\n- [Ethereum Virtual Machine Opcodes Interactive Reference](https://www.evm.codes/)\n- [A short introduction in Solidity's documentation](https://docs.soliditylang.org/en/latest/introduction-to-smart-contracts.html#index-6)\n- [Mastering Ethereum - The Ethereum Virtual Machine](https://github.com/ethereumbook/ethereumbook/blob/openedition/13evm.asciidoc)"
+
+7. The "Related Topics" and "Tutorials" sections were omitted because they are navigation and reference material, not spoken article content.
+   Original text excerpt: "## Related Topics {#related-topics}\n- [Gas](/developers/docs/gas/)\n\n## Tutorials: Ethereum Virtual Machine (EVM) / Opcodes on Ethereum {#tutorials}\n- [Understanding the Yellow Paper's EVM Specifications](/developers/tutorials/yellow-paper-evm/)\n- [Reverse Engineering a Contract](/developers/tutorials/reverse-engineering-a-contract/)"
+
+8. The final QuizWidget was removed because it is an interactive page element, not article narration.
+   Original text excerpt: "<QuizWidget quizKey=\"evm\" />"
+
+No explanatory article section was intentionally omitted. Audio and SRT generation were not performed.

@@ -23,11 +23,11 @@ python -c "from pathlib import Path; from pypdf import PdfReader; folder=Path('a
 
 python "$folder/prepare_text.py" "$folder/raw.txt" "$folder/normalized.txt"
 
-edge-tts --voice en-US-AriaNeural --file "$folder/normalized.txt" --write-media "$folder/normalized.mp3" --write-subtitles "$folder/normalized.srt"
+edge-tts --voice en-US-EricNeural --file "$folder/normalized.txt" --write-media "$folder/normalized.mp3""
 ```
 
 The one-page input is `one-page.pdf`. Compare `raw.txt` with
-`normalized.txt`, and inspect `normalized.srt`: wrapped source lines should no
+`normalized.txt`: wrapped source lines should no
 longer become separate speech cues. To fix the existing whitepaper output:
 
 ```powershell
@@ -35,8 +35,7 @@ python "$folder/prepare_text.py" `
 	'bitcoin-whitepaper-audio/bitcoin-whitepaper.txt' `
 	'bitcoin-whitepaper-audio/bitcoin-whitepaper-normalized.txt'
 	
-edge-tts --voice en-US-AriaNeural `
+edge-tts --voice en-US-EricNeural `
 	--file 'bitcoin-whitepaper-audio/bitcoin-whitepaper-normalized.txt' `
-	--write-media 'bitcoin-whitepaper-audio/bitcoin-whitepaper-normalized.mp3' `
-	--write-subtitles 'bitcoin-whitepaper-audio/bitcoin-whitepaper-normalized.srt'
+	--write-media 'bitcoin-whitepaper-audio/bitcoin-whitepaper-normalized.mp3'
 ```

@@ -1,0 +1,95 @@
+Gas and fees
+
+Gas is essential to the Ethereum network. It is the fuel that allows it to operate, in the same way that a car needs gasoline to run.
+
+Prerequisites
+
+To better understand this page, we recommend you first read up on transactions and the EVM.
+
+What is gas?
+
+Gas refers to the unit that measures the amount of computational effort required to execute specific operations on the Ethereum network.
+
+Since each Ethereum transaction requires computational resources to execute, those resources have to be paid for to ensure Ethereum is not vulnerable to spam and cannot get stuck in infinite computational loops. Payment for computation is made in the form of a gas fee.
+
+The gas fee is the amount of gas used to do some operation, multiplied by the cost per unit gas. The fee is paid regardless of whether a transaction succeeds or fails.
+
+Gas fees have to be paid in Ethereum's native currency, ether, or ETH. Gas prices are usually quoted in gwei, which is a denomination of ETH. Each gwei is equal to one-billionth of an ETH. For example, instead of saying that your gas costs 0.000000001 ether, you can say your gas costs 1 gwei.
+
+The word gwei is a contraction of giga-wei, meaning billion wei. One gwei is equal to one billion wei. Wei itself is the smallest unit of ETH.
+
+How are gas fees calculated?
+
+You can set the amount of gas you are willing to pay when you submit a transaction. By offering a certain amount of gas, you are bidding for your transaction to be included in the next block. If you offer too little, validators are less likely to choose your transaction for inclusion, meaning your transaction may execute late or not at all. If you offer too much, you might waste some ETH.
+
+The total gas you pay is divided into two components: the base fee and the priority fee, or tip.
+
+The base fee is set by the protocol. You have to pay at least this amount for your transaction to be considered valid. The priority fee is a tip that you add to the base fee to make your transaction attractive to validators so that they choose it for inclusion in the next block.
+
+A transaction that only pays the base fee is technically valid but unlikely to be included because it offers no incentive to the validators to choose it over any other transaction. The correct priority fee is determined by network usage at the time you send your transaction. If there is a lot of demand, you might have to set your priority fee higher. When there is less demand, you can pay less.
+
+For example, let's say Jordan has to pay Taylor 1 ETH. An ETH transfer requires 21,000 units of gas, and the base fee is 10 gwei. Jordan includes a tip of 2 gwei.
+
+The total fee would now be equal to units of gas used multiplied by base fee plus priority fee. With 21,000 times 12 gwei, the total is 252,000 gwei, or 0.000252 ETH.
+
+When Jordan sends the money, 1.000252 ETH will be deducted from Jordan's account. Taylor will be credited 1.0000 ETH. The validator receives the tip of 0.000042 ETH. The base fee of 0.00021 ETH is burned.
+
+Base fee
+
+Every block has a base fee which acts as a reserve price. To be eligible for inclusion in a block, the offered price per gas must at least equal the base fee. The base fee is calculated independently of the current block and is instead determined by the blocks before it, making transaction fees more predictable for users. When the block is created, this base fee is burned, removing it from circulation.
+
+The base fee is calculated by a formula that compares the size of the previous block, the amount of gas used for all the transactions, with the target size, half of the gas limit. The base fee will increase or decrease by a maximum of 12.5 percent per block if the target block size is above or below the target, respectively. This exponential growth makes it economically non-viable for block size to remain high indefinitely.
+
+The table in the original article demonstrates a rising base fee over successive blocks. In practice, the key point is that wallet software can use a predictable maximum base fee for the next block, and the fee adjusts rapidly when blocks fill up. This is important for preventing prolonged spikes in network demand.
+
+Priority fee, or tips
+
+The priority fee, or tip, incentivizes validators to maximize the number of transactions in a block, constrained only by the block gas limit. Without tips, a rational validator could include fewer or even zero transactions without any direct execution layer or consensus layer penalty, as staking rewards are independent of how many transactions are in a block. Additionally, tips allow users to outbid others for priority within the same block, effectively signaling urgency.
+
+Max fee
+
+To execute a transaction on the network, users can specify a maximum limit they are willing to pay for their transaction to be executed. This optional parameter is known as max fee per gas. For a transaction to be executed, the max fee must exceed the sum of the base fee and the tip. The transaction sender is refunded the difference between the max fee and the sum of the base fee and tip.
+
+Block size
+
+Each block has a target size of half the current gas limit, but the size of blocks will increase or decrease in accordance with network demand, up until the block limit is reached, which is two times the target block size. The protocol achieves an equilibrium average block size at the target through a process called tatonnement. This means that if the block size is greater than the target block size, the protocol will increase the base fee for the following block. Similarly, the protocol will decrease the base fee if the block size is less than the target block size.
+
+The amount by which the base fee is adjusted is proportional to how far the current block size is from the target. This is a linear calculation from minus 12.5 percent for an empty block, 0 percent at the target size, up to plus 12.5 percent for a block reaching the gas limit. The gas limit can fluctuate over time based on validator signaling, as well as via network upgrades.
+
+Calculating gas fees in practice
+
+You can explicitly state how much you are willing to pay to get your transaction executed. However, most wallet providers will automatically set a recommended transaction fee, consisting of the base fee plus the recommended priority fee, to reduce complexity for users.
+
+Why do gas fees exist?
+
+In short, gas fees help keep the Ethereum network secure. By requiring a fee for every computation executed on the network, we prevent bad actors from spamming the network. In order to avoid accidental or hostile infinite loops or other computational wastage in code, each transaction is required to set a limit to how many computational steps of code execution it can use. The fundamental unit of computation is gas.
+
+Although a transaction includes a limit, any gas not used in a transaction is returned to the user. In other words, max fee minus base fee plus tip is returned.
+
+What is the gas limit?
+
+The gas limit refers to the maximum amount of gas you are willing to consume on a transaction. More complicated transactions involving smart contracts require more computational work, so they require a higher gas limit than a simple payment. A standard ETH transfer requires a gas limit of 21,000 units of gas.
+
+For example, if you put a gas limit of 50,000 for a simple ETH transfer, the EVM would consume 21,000 and you would get back the remaining 29,000. However, if you specify too little gas, for example a gas limit of 20,000 for a simple ETH transfer, the transaction will fail during the validation phase. It will be rejected before being included in a block, and no gas will be consumed. On the other hand, if a transaction runs out of gas during execution, the EVM will revert any changes, but all the gas provided will still be consumed for the work performed.
+
+Why can gas fees get so high?
+
+High gas fees are due to the popularity of Ethereum. If there is too much demand, users must offer higher tip amounts to try and outbid other users' transactions. A higher tip can make it more likely that your transaction will get into the next block. Also, more complex smart contract apps might be doing lots of operations to support their functions, making them consume a lot of gas.
+
+Initiatives to reduce gas costs
+
+The Ethereum scalability upgrades should ultimately address some of the gas fee issues, which will in turn enable the platform to process thousands of transactions per second and scale globally.
+
+Layer 2 scaling is a primary initiative to greatly improve gas costs, user experience, and scalability.
+
+Monitoring gas fees
+
+If you want to monitor gas prices so you can send your ETH for less, you can use a variety of tools such as Etherscan, Blockscout, ETH Gas Tracker, Blocknative ETH Gas Estimator, and Cryptoneur Gas Fees Calculator.
+
+Related tools
+
+You can also use tools such as Blocknative's Gas Platform and Gas Network to estimate gas usage and monitor gas conditions across networks.
+
+In summary
+
+Gas fees are a core mechanism that keeps Ethereum secure, ensures that transaction execution has a resource limit, and helps users understand the costs of interacting with the network. They are a practical part of the ETH economy and an essential concept for anyone using or building on Ethereum.
