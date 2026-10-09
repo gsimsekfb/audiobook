@@ -1,0 +1,27 @@
+Source: User-provided Ethereum.org article, "Transactions" (5-txs.md)
+
+Article explanations were retained. Markdown styling, heading anchors, and hyperlink destination URLs were removed; link labels were retained. Lists were converted to spoken paragraphs.
+
+Items excluded or converted:
+
+1. Under "What's a transaction?": the diagram showing a transaction causing a state change and its adaptation credit. These are visual material.
+
+2. Under "What's a transaction?": the example JavaScript transaction object. Its sample addresses and field values are machine-readable and not useful spoken aloud. The surrounding explanation of signing is retained.
+
+3. Under "What's a transaction?": the example JSON-RPC request and response, including sample addresses, raw signed transaction bytes, signatures, and hashes. These machine-readable payloads were omitted; the explanation of RLP and JSON transaction forms is retained.
+
+4. Under "The data field": the instruction "Use Click to see More to see the calldata," which is an on-screen interaction prompt. The long hexadecimal calldata sample and exact function selector were omitted as machine-readable values. The explanatory text about selectors, ABI encoding, recipient addresses, and amount was retained.
+
+5. Under "On gas": the arithmetic code block was converted to spoken arithmetic. Its result and ETH equivalent were retained.
+
+6. Under "Transaction lifecycle": the sample transaction hash was omitted; the lifecycle steps and their explanations were retained.
+
+7. Under "A visual demo": the visual-demo heading, video prompt, and embedded video. These are video-specific material.
+
+8. Markdown code formatting, bullet/numbered list syntax, and emphasis were converted to plain text. Typed transaction details and field names were retained.
+
+9. Under "Further reading": the community contribution prompt. It is an editorial instruction, not article content.
+
+10. Page components: the Divider and QuizWidget are layout or interactive elements, not narration.
+
+No explanatory article section was intentionally omitted. Audio and SRT generation were not performed.

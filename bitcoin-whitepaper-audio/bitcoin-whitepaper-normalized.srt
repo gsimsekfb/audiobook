@@ -1,0 +1,640 @@
+1
+00:00:00,100 --> 00:00:10,700
+Bitcoin: A Peer-to-Peer Electronic Cash System Satoshi Nakamoto satoshin@gmx.com www.bitcoin.org Abstract.
+
+2
+00:00:10,650 --> 00:00:20,387
+A purely peer-to-peer version of  electronic cash would allow online payments to be sent directly from one party to another without going through a financial institution.
+
+3
+00:00:20,387 --> 00:00:29,412
+Digital signatures provide part of the solution, but the main benefits are lost if a trusted third party is still required to prevent double-spending.
+
+4
+00:00:29,412 --> 00:00:34,525
+We propose a solution to the double-spending problem using a peer-to-peer network.
+
+5
+00:00:34,525 --> 00:00:45,125
+The network timestamps transactions by hashing them into an ongoing chain of hash-based proof-of-work, forming a record that cannot be changed without redoing the proof-of-work.
+
+6
+00:00:45,125 --> 00:00:53,462
+The longest chain not only serves as proof of the sequence of events witnessed, but proof that it came from the largest pool of CPU power.
+
+7
+00:00:53,462 --> 00:01:03,337
+As long as a majority of CPU power is controlled by nodes that are not cooperating to attack the network, they'll generate the longest chain and outpace attackers.
+
+8
+00:01:03,337 --> 00:01:06,900
+The network itself requires minimal structure.
+
+9
+00:01:06,900 --> 00:01:17,825
+Messages are broadcast on a best effort basis, and nodes can leave and rejoin the network at will, accepting the longest proof-of-work chain as proof of what happened while they were gone.
+
+10
+00:01:17,825 --> 00:01:28,700
+1. Introduction Commerce on the Internet has come to rely almost exclusively on financial institutions serving as trusted third parties to process electronic payments.
+
+11
+00:01:28,700 --> 00:01:36,337
+While the system works well enough for most  transactions,  it  still  suffers  from  the  inherent  weaknesses  of  the  trust  based  model.
+
+12
+00:01:36,337 --> 00:01:44,650
+Completely non-reversible transactions are not really possible, since financial institutions cannot avoid  mediating  disputes.
+
+13
+00:01:44,650 --> 00:02:01,387
+The  cost  of  mediation  increases  transaction  costs,  limiting  the minimum practical transaction size and cutting off the possibility for small casual transactions, and there is a broader cost in the loss of ability to make non-reversible payments for non- reversible services.
+
+14
+00:02:01,387 --> 00:02:05,687
+With the possibility of reversal, the need for trust spreads.
+
+15
+00:02:05,687 --> 00:02:12,300
+Merchants must be wary of their customers, hassling them for more information than they would otherwise need.
+
+16
+00:02:12,300 --> 00:02:16,337
+A certain percentage of fraud is accepted as unavoidable.
+
+17
+00:02:16,337 --> 00:02:27,662
+These costs and payment uncertainties can be avoided in person by using physical currency, but no mechanism exists to make payments over a communications channel without a trusted party.
+
+18
+00:02:27,662 --> 00:02:39,587
+What is needed is an electronic payment system based on cryptographic proof instead of trust, allowing any two willing parties to transact directly with each other without the need for a trusted third party.
+
+19
+00:02:39,587 --> 00:02:50,112
+Transactions that are computationally impractical to reverse would protect sellers from fraud, and routine escrow mechanisms could easily be implemented to protect buyers.
+
+20
+00:02:50,112 --> 00:03:01,825
+In this paper, we propose a solution to the double-spending problem using a peer-to-peer distributed timestamp server to generate computational proof of the chronological order of transactions.
+
+21
+00:03:01,825 --> 00:03:09,837
+The system  is  secure  as  long  as  honest  nodes  collectively  control  more  CPU  power  than  any cooperating group of attacker nodes.
+
+22
+00:03:09,837 --> 00:03:11,200
+1
+
+23
+00:03:11,356 --> 00:03:17,356
+2. Transactions We define an electronic coin as a chain of digital signatures.
+
+24
+00:03:17,306 --> 00:03:27,143
+Each owner transfers the coin to the next by digitally signing a hash of the previous transaction and the public key of the next owner and adding these to the end of the coin.
+
+25
+00:03:27,143 --> 00:03:31,993
+A payee can verify the signatures to verify the chain of ownership.
+
+26
+00:03:31,993 --> 00:03:37,981
+The problem of course is the payee can't verify that one of the owners did not double-spend the coin.
+
+27
+00:03:37,981 --> 00:03:45,806
+A common solution is to introduce a trusted central authority, or mint, that checks every transaction for double spending.
+
+28
+00:03:45,806 --> 00:03:55,756
+After each transaction, the coin must be returned to the mint to issue a new coin, and only coins issued directly from the mint are trusted not to be double-spent.
+
+29
+00:03:55,756 --> 00:04:05,843
+The  problem with  this solution  is that  the  fate of the entire  money system depends on the company running the mint, with every transaction having to go through them, just like a bank.
+
+30
+00:04:05,843 --> 00:04:12,068
+We need a way for the payee to know that the previous owners did not sign any earlier transactions.
+
+31
+00:04:12,068 --> 00:04:19,593
+For our purposes, the earliest transaction is the one that counts, so we don't care about later attempts to double-spend.
+
+32
+00:04:19,593 --> 00:04:25,481
+The only way to confirm the absence of a transaction is to be aware of all transactions.
+
+33
+00:04:25,481 --> 00:04:31,606
+In the mint based model, the mint was aware of all transactions and decided which arrived first.
+
+34
+00:04:31,606 --> 00:04:43,618
+To accomplish this without a trusted party, transactions must be publicly announced [1], and we need a system for participants to agree on a single history of the order in which they were received.
+
+35
+00:04:43,618 --> 00:04:50,631
+The payee needs proof that at the time of each transaction, the majority of nodes agreed it was the first received.
+
+36
+00:04:50,631 --> 00:04:56,156
+3. Timestamp Server The solution we propose begins with a timestamp server.
+
+37
+00:04:56,156 --> 00:05:06,643
+A timestamp server works by taking a hash  of a  block  of  items  to  be  timestamped  and  widely  publishing  the  hash,  such  as  in  a newspaper or Usenet post [2-5].
+
+38
+00:05:06,643 --> 00:05:13,456
+The timestamp proves that the data must have existed at the time, obviously, in order to get into the hash.
+
+39
+00:05:13,456 --> 00:05:22,481
+Each timestamp includes the previous timestamp in its hash, forming a chain, with each additional timestamp reinforcing the ones before it.
+
+40
+00:05:22,481 --> 00:05:24,681
+2 Block Item Item ...
+
+41
+00:05:24,681 --> 00:05:26,981
+Hash Block Item Item ...
+
+42
+00:05:26,981 --> 00:05:44,943
+Hash Transaction Owner 1's Public Key Owner 0's Signature Hash Transaction Owner 2's Public Key Owner 1's Signature Hash Verify Transaction Owner 3's Public Key Owner 2's Signature Hash Verify Owner 2's Private Key Owner 1's Private Key Sign  Sign Owner 3's Private Key
+
+43
+00:05:45,100 --> 00:05:58,500
+4. Proof-of-Work To implement a distributed timestamp server on a peer-to-peer basis, we will need to use a proof- of-work system similar to Adam Back's Hashcash [6], rather than newspaper or Usenet posts.
+
+44
+00:05:58,450 --> 00:06:07,500
+The proof-of-work involves scanning for a value that when hashed, such as with SHA-256, the hash begins with a number of zero bits.
+
+45
+00:06:07,500 --> 00:06:15,550
+The average work required is exponential in the number of zero bits required and can be verified by executing a single hash.
+
+46
+00:06:15,550 --> 00:06:25,525
+For our timestamp network, we implement the proof-of-work by incrementing a nonce in the block until a value is found that gives the block's hash the required zero bits.
+
+47
+00:06:25,525 --> 00:06:33,550
+Once the CPU effort has been expended to make it satisfy the proof-of-work, the block cannot be changed without redoing the work.
+
+48
+00:06:33,550 --> 00:06:40,325
+As later blocks are chained after it, the work to change the block would include redoing all the blocks after it.
+
+49
+00:06:40,325 --> 00:06:46,612
+The proof-of-work also solves the problem of determining representation in majority decision making.
+
+50
+00:06:46,612 --> 00:06:54,162
+If the majority were based on one-IP-address-one-vote, it could be subverted by anyone able  to  allocate  many  IPs.
+
+51
+00:06:54,162 --> 00:06:57,862
+Proof-of-work  is  essentially  one-CPU-one-vote.
+
+52
+00:06:57,862 --> 00:07:05,087
+The  majority decision is represented by the longest chain, which has the greatest proof-of-work effort invested in it.
+
+53
+00:07:05,087 --> 00:07:13,437
+If a majority of CPU power is controlled by honest nodes, the honest chain will grow the fastest and outpace any competing chains.
+
+54
+00:07:13,437 --> 00:07:23,287
+To modify a past block, an attacker would have to redo the proof-of-work of the block and all blocks after it and then catch up with and surpass the work of the honest nodes.
+
+55
+00:07:23,287 --> 00:07:31,100
+We will show later that the probability of a slower attacker catching up diminishes exponentially as subsequent blocks are added.
+
+56
+00:07:31,100 --> 00:07:42,975
+To compensate for increasing hardware speed and varying interest in running nodes over time, the proof-of-work difficulty is determined by a moving average targeting an average number of blocks per hour.
+
+57
+00:07:42,975 --> 00:07:47,187
+If they're generated too fast, the difficulty increases.
+
+58
+00:07:47,187 --> 00:07:55,000
+5. Network The steps to run the network are as follows: 1) New transactions are broadcast to all nodes.
+
+59
+00:07:55,000 --> 00:07:59,212
+2) Each node collects new transactions into a block.
+
+60
+00:07:59,212 --> 00:08:04,162
+3) Each node works on finding a difficult proof-of-work for its block.
+
+61
+00:08:04,162 --> 00:08:09,700
+4) When a node finds a proof-of-work, it broadcasts the block to all nodes.
+
+62
+00:08:09,700 --> 00:08:16,062
+5) Nodes accept the block only if all transactions in it are valid and not already spent.
+
+63
+00:08:16,062 --> 00:08:25,637
+6) Nodes express their acceptance of the block by working on creating the next block in the chain, using the hash of the accepted block as the previous hash.
+
+64
+00:08:25,637 --> 00:08:31,637
+Nodes always consider the longest chain to be the correct one and will keep working on extending it.
+
+65
+00:08:31,637 --> 00:08:39,475
+If two nodes broadcast different versions of the next block simultaneously, some nodes may receive one or the other first.
+
+66
+00:08:39,475 --> 00:08:46,175
+In that case, they work on the first one they received, but save the other branch in case it becomes longer.
+
+67
+00:08:46,175 --> 00:08:55,600
+The tie will be broken when the next proof- of-work is found and one branch becomes longer; the nodes that were working on the other branch will then switch to the longer one.
+
+68
+00:08:55,600 --> 00:08:59,275
+3 Block Prev Hash Nonce Tx Tx ...
+
+69
+00:08:59,275 --> 00:09:02,700
+Block Prev Hash Nonce Tx Tx ...
+
+70
+00:09:02,860 --> 00:09:08,047
+New transaction broadcasts do not necessarily need to reach all nodes.
+
+71
+00:09:07,997 --> 00:09:12,735
+As long as they reach many nodes, they will get into a block before long.
+
+72
+00:09:12,735 --> 00:09:16,835
+Block broadcasts are also tolerant of dropped messages.
+
+73
+00:09:16,835 --> 00:09:23,635
+If a node does not receive a block, it will request it when it receives the next block and realizes it missed one.
+
+74
+00:09:23,635 --> 00:09:32,822
+6. Incentive By convention, the first transaction in a block is a special transaction that starts a new coin owned by the creator of the block.
+
+75
+00:09:32,822 --> 00:09:43,435
+This adds an incentive for nodes to support the network, and providesa way to initially distribute coins into circulation, since there is no central authority to issue them.
+
+76
+00:09:43,435 --> 00:09:51,660
+The steady addition of a constant of amount of new coins is analogous to gold miners expending resources to add gold to circulation.
+
+77
+00:09:51,660 --> 00:09:56,310
+In our case, it is CPU time and electricity that is expended.
+
+78
+00:09:56,310 --> 00:10:00,385
+The incentive can also be funded with transaction fees.
+
+79
+00:10:00,385 --> 00:10:10,947
+If the output value of a transaction is less than its input value, the difference is a transaction fee that is added to the incentive value of the  block  containing  the  transaction.
+
+80
+00:10:10,947 --> 00:10:20,685
+Once  a  predetermined  number  of  coins  have  entered circulation, the incentive can transition entirely to transaction fees and be completely inflation free.
+
+81
+00:10:20,685 --> 00:10:24,660
+The incentive may help encourage nodes to stay honest.
+
+82
+00:10:24,660 --> 00:10:37,147
+If a greedy attacker is able to assemble more CPU power than all the honest nodes, he would have to choose between using it to defraud people by stealing back his payments, or using it to generate new coins.
+
+83
+00:10:37,147 --> 00:10:48,260
+He ought to find it more profitable to play by the rules, such rules that favour him with more new coins than everyone else combined, than to undermine the system and the validity of his own wealth.
+
+84
+00:10:48,260 --> 00:10:58,672
+7. Reclaiming Disk Space Once the latest transaction in a coin is buried under enough blocks, the spent transactions before it can be discarded to save disk space.
+
+85
+00:10:58,672 --> 00:11:09,185
+To facilitate this without breaking the block's hash, transactions are hashed in a Merkle Tree [7][2][5], with only the root included in the block's hash.
+
+86
+00:11:09,185 --> 00:11:13,747
+Old blocks can then be compacted by stubbing off branches of the tree.
+
+87
+00:11:13,747 --> 00:11:17,147
+The interior hashes do not need to be stored.
+
+88
+00:11:17,147 --> 00:11:21,422
+A block header with no transactions would be about 80 bytes.
+
+89
+00:11:21,422 --> 00:11:32,272
+If we suppose blocks are generated every 10 minutes, 80 bytes * 6 * 24 * 365 = 4.2MB per year.
+
+90
+00:11:32,272 --> 00:11:46,372
+With computer systems typically selling with 2GB of RAM as of 2008, and Moore's Law predicting current growth of 1.2GB per year, storage should not be a problem even if the block headers must be kept in memory.
+
+91
+00:11:46,372 --> 00:12:12,047
+4 BlockBlock Block Header (Block Hash) Prev Hash Nonce Hash01 Hash0 Hash1 Hash2 Hash3 Hash23 Root Hash Hash01 Hash2 Tx3 Hash23 Block Header (Block Hash) Root Hash Transactions Hashed in a Merkle Tree After Pruning Tx0-2 from the Block Prev Hash Nonce Hash3 Tx0 Tx1 Tx2 Tx3
+
+92
+00:12:12,196 --> 00:12:19,158
+8. Simplified Payment Verification It is possible to verify payments without running a full network node.
+
+93
+00:12:19,108 --> 00:12:34,071
+A user only needs to keepa copy of the block headers of the longest proof-of-work chain, which he can get by querying network nodes until he's convinced he has the longest chain, and obtain the Merkle branch linking the transaction to the block it's timestamped in.
+
+94
+00:12:34,071 --> 00:12:46,108
+He can't  check the transaction for himself, but by linking it to a place in the chain, he can see that a network node has accepted it, and blocks added after it further confirm the network has accepted it.
+
+95
+00:12:46,108 --> 00:12:55,621
+As such, the verification is reliable as long as honest nodes control the network, but is more vulnerable  if  the  network  is overpowered  by an  attacker.
+
+96
+00:12:55,621 --> 00:13:07,821
+While  network  nodes can  verify transactions for themselves, the  simplified  method  can be  fooled by an attacker's fabricated transactions for as long as the attacker can continue to overpower the network.
+
+97
+00:13:07,821 --> 00:13:21,033
+One strategy to protect against this would be to accept alerts from network nodes when they detect an invalid block, prompting  the  user's  software  to  download  the  full  block  and alerted  transactions to confirm the inconsistency.
+
+98
+00:13:21,033 --> 00:13:29,371
+Businesses that receive frequent payments will probably still want to run their own nodes for more independent security and quicker verification.
+
+99
+00:13:29,371 --> 00:13:39,996
+9. Combining and Splitting Value Although it would be possible to handle coins individually, it would be unwieldy to make a separate transaction for every cent in a transfer.
+
+100
+00:13:39,996 --> 00:13:46,421
+To allow value to be split and combined, transactions contain multiple inputs and outputs.
+
+101
+00:13:46,421 --> 00:14:00,196
+Normally there will be either a single input from a larger previous transaction or multiple inputs combining smaller amounts, and at most two outputs: one for the payment, and one returning the change, if any, back to the sender.
+
+102
+00:14:00,196 --> 00:14:09,696
+It should be noted that fan-out, where a transaction depends on several transactions, and those transactions depend on many more, is not a problem here.
+
+103
+00:14:09,696 --> 00:14:15,408
+There is never the need to extract a complete standalone copy of a transaction's history.
+
+104
+00:14:15,408 --> 00:14:17,733
+5 Transaction In ...
+
+105
+00:14:17,733 --> 00:14:19,233
+In Out ...
+
+106
+00:14:19,233 --> 00:14:34,333
+Hash01 Hash2 Hash3 Hash23 Block Header Merkle Root Prev Hash Nonce Block Header Merkle Root Prev Hash Nonce Block Header Merkle Root Prev Hash Nonce Merkle Branch for Tx3 Longest Proof-of-Work Chain Tx3
+
+107
+00:14:34,492 --> 00:14:44,217
+10. Privacy The traditional banking model achieves a level of privacy by limiting access to information to the parties involved and the trusted third party.
+
+108
+00:14:44,167 --> 00:14:56,167
+The necessity to announce all transactions publicly precludes this method, but privacy can still be maintained by breaking the flow of information in another place: by keeping public keys anonymous.
+
+109
+00:14:56,167 --> 00:15:03,729
+The public can see that someone is sending an amount to someone else, but without information linking the transaction to anyone.
+
+110
+00:15:03,729 --> 00:15:14,879
+This is similar to the level of information released by stock exchanges, where the time and size of individual trades, the "tape", is made public, but without telling who the parties were.
+
+111
+00:15:14,879 --> 00:15:22,579
+As an additional firewall, a new key pair should be used for each transaction to keep them from being linked to a common owner.
+
+112
+00:15:22,579 --> 00:15:31,017
+Some  linking is still unavoidable with multi-input transactions, which necessarily reveal that their inputs were owned by the same owner.
+
+113
+00:15:31,017 --> 00:15:38,154
+The risk is that if the owner of a key is revealed, linking could reveal other transactions that belonged to the same owner.
+
+114
+00:15:38,154 --> 00:15:46,279
+11. Calculations We consider the scenario of an attacker trying to generate an alternate chain faster than the honest chain.
+
+115
+00:15:46,279 --> 00:15:56,654
+Even if this is accomplished, it does not throw the system open to arbitrary changes, such as creating value out of thin air or taking money that never belonged to the attacker.
+
+116
+00:15:56,654 --> 00:16:04,379
+Nodes are not going to accept an invalid transaction as payment, and honest nodes will never accept a block containing them.
+
+117
+00:16:04,379 --> 00:16:10,767
+An attacker can only try to change one of his own transactions to take back money he recently spent.
+
+118
+00:16:10,767 --> 00:16:17,167
+The race between the honest chain and an attacker chain can be characterized as a Binomial Random Walk.
+
+119
+00:16:17,167 --> 00:16:29,929
+The success event is the honest chain being extended by one block, increasing its lead by +1, and the failure event is the attacker's chain being extended by one block, reducing the gap by -1.
+
+120
+00:16:29,929 --> 00:16:36,454
+The probability of an attacker catching up from a given deficit is analogous to a Gambler's Ruin problem.
+
+121
+00:16:36,454 --> 00:16:44,679
+Suppose a gambler with unlimited credit starts at a deficit and plays potentially an infinite number of trials to try to reach breakeven.
+
+122
+00:16:44,679 --> 00:17:18,579
+We can calculate the probability he ever reaches breakeven, or that an attacker ever catches up with the honest chain, as follows [8]:p = probability an honest node finds the next blockq = probability the attacker finds the next block qz = probability the attacker will ever catch up from z blocks behind qz={ 1 if p≤q q/ pz if pq} 6 Identities Transactions Trusted Third Party Counterparty Public Identities Transactions Public New Privacy Model Traditional Privacy Model
+
+123
+00:17:18,748 --> 00:17:27,735
+Given our assumption that p > q, the probability drops exponentially as the number of blocks the attacker has to catch up with increases.
+
+124
+00:17:27,685 --> 00:17:36,548
+With the odds against him, if he doesn't make a lucky lunge forward early on, his chances become vanishingly small as he falls further behind.
+
+125
+00:17:36,548 --> 00:17:45,098
+We now consider how long the recipient of a new transaction needs to wait before being sufficiently certain the sender can't change the transaction.
+
+126
+00:17:45,098 --> 00:17:54,548
+We assume the sender is an attacker who wants to make the recipient believe he paid him for a while, then switch it to pay back to himself after some time has passed.
+
+127
+00:17:54,548 --> 00:17:59,848
+The receiver will be alerted when that happens, but the sender hopes it will be too late.
+
+128
+00:17:59,848 --> 00:18:05,860
+The receiver generates a new key pair and gives the public key to the sender shortly before signing.
+
+129
+00:18:05,860 --> 00:18:17,210
+This prevents the sender from preparing a chain of blocks ahead of time by working on it continuously until he is lucky enough to get far enough ahead, then executing the transaction at that moment.
+
+130
+00:18:17,210 --> 00:18:26,173
+Once the transaction is sent, the dishonest sender starts working in secret on a parallel chain containing an alternate version of his transaction.
+
+131
+00:18:26,173 --> 00:18:32,548
+The recipient waits until the transaction has been added to a block and  z blocks have been linked  after  it.
+
+132
+00:18:32,548 --> 00:19:00,398
+He  doesn't  know  the  exact  amount  of  progress  the  attacker  has  made, but assuming the honest blocks took the average expected time per block, the attacker's potential progress will be a Poisson distribution with expected value: =z qp To get the probability the attacker could still catch up now, we multiply the Poisson density for each amount of progress he could have made by the probability he could catch up from that point: ∑k=0 ∞ k e− k!
+
+133
+00:19:00,398 --> 00:19:09,710
+q/ pz−k if k≤ z 1 if k z} Rearranging to avoid summing the infinite tail of the distribution...
+
+134
+00:19:09,710 --> 00:19:14,473
+1−∑k=0z k e− k!
+
+135
+00:19:14,473 --> 00:19:55,160
+1−q/ pz−k  Converting to C code... #include <math.h> double AttackerSuccessProbability(double q, int z) { double p = 1.0 - q; double lambda = z * (q / p); double sum = 1.0; int i, k; for (k = 0; k <= z; k++) { double poisson = exp(-lambda); for (i = 1; i <= k; i++) poisson *= lambda / i; sum -= poisson * (1 - pow(q / p, z - k)); } return sum; } 7
+
+136
+00:19:55,160 --> 00:20:00,723
+Running some results, we can see the probability drop off exponentially with z.
+
+137
+00:20:00,723 --> 00:21:53,685
+q=0.1 z=0    P=1.0000000 z=1    P=0.2045873 z=2    P=0.0509779 z=3    P=0.0131722 z=4    P=0.0034552 z=5    P=0.0009137 z=6    P=0.0002428 z=7    P=0.0000647 z=8    P=0.0000173 z=9    P=0.0000046 z=10   P=0.0000012 q=0.3 z=0    P=1.0000000 z=5    P=0.1773523 z=10   P=0.0416605 z=15   P=0.0101008 z=20   P=0.0024804 z=25   P=0.0006132 z=30   P=0.0001522 z=35   P=0.0000379 z=40   P=0.0000095 z=45   P=0.0000024 z=50   P=
+
+138
+00:21:53,685 --> 00:22:00,573
+0.0000006 Solving for P less than 0.1%...
+
+139
+00:22:00,573 --> 00:22:29,710
+P < 0.001 q=0.10   z=5 q=0.15   z=8 q=0.20   z=11 q=0.25   z=15 q=0.30   z=24 q=0.35   z=41 q=0.40   z=89 q=0.45   z=340 12.
+
+140
+00:22:29,710 --> 00:22:35,710
+Conclusion We have proposed a system for electronic transactions without relying on trust.
+
+141
+00:22:35,710 --> 00:22:46,273
+We started with the usual framework of coins made from digital signatures, which provides strong control of ownership, but is incomplete without a way to prevent double-spending.
+
+142
+00:22:46,273 --> 00:23:00,548
+To solve this, we proposed a peer-to-peer network using proof-of-work to record a public history of transactions that quickly becomes computationally impractical  for  an attacker to change if honest nodes control a majority of CPU power.
+
+143
+00:23:00,548 --> 00:23:04,335
+The network is robust in its unstructured simplicity.
+
+144
+00:23:04,335 --> 00:23:07,760
+Nodes work all at once with little coordination.
+
+145
+00:23:07,760 --> 00:23:16,623
+They do not need to be identified, since messages are not routed to any particular place and only need to be delivered on a best effort basis.
+
+146
+00:23:16,623 --> 00:23:23,948
+Nodes can leave  and  rejoin  the  network  at  will,  accepting  the  proof-of-work  chain  as  proof  of  what happened while they were gone.
+
+147
+00:23:23,948 --> 00:23:33,760
+They vote with their CPU power, expressing their acceptance of valid blocks by working on extending them and rejecting invalid blocks by refusing to work on them.
+
+148
+00:23:33,760 --> 00:23:38,748
+Any needed rules and incentives can be enforced with this consensus mechanism.
+
+149
+00:23:38,748 --> 00:23:40,098
+8
+
+150
+00:23:40,252 --> 00:23:52,514
+References [1] W. Dai, "b-money," http://www.weidai.com/bmoney.txt, 1998.
+
+151
+00:23:52,464 --> 00:23:57,214
+2] H. Massias, X.S. Avila, and J.-J.
+
+152
+00:23:57,214 --> 00:24:08,302
+Quisquater, "Design of a secure timestamping service with minimal trust requirements," In 20th Symposium on Information Theory in the Benelux, May 1999.
+
+153
+00:24:08,302 --> 00:24:21,227
+3] S. Haber, W.S. Stornetta, "How to time-stamp a digital document," In Journal of Cryptology, vol 3, no 2, pages 99-111, 1991.
+
+154
+00:24:21,227 --> 00:24:39,539
+4] D. Bayer, S. Haber, W.S. Stornetta, "Improving the efficiency and reliability of digital time-stamping," In Sequences II: Methods in Communication, Security and Computer Science, pages 329-334, 1993.
+
+155
+00:24:39,539 --> 00:24:54,077
+5] S. Haber, W.S. Stornetta, "Secure names for bit-strings," In Proceedings of the 4th ACM Conference on Computer and Communications Security, pages 28-35, April 1997.
+
+156
+00:24:54,077 --> 00:24:56,102
+6] A.
+
+157
+00:24:56,102 --> 00:25:09,052
+Back, "Hashcash - a denial of service counter-measure," http://www.hashcash.org/papers/hashcash.pdf, 2002.
+
+158
+00:25:09,052 --> 00:25:24,464
+7] R.C. Merkle, "Protocols for public key cryptosystems," In Proc. 1980 Symposium on Security and Privacy, IEEE Computer Society, pages 122-133, April 1980.
+
+159
+00:25:24,464 --> 00:25:31,527
+8] W. Feller, "An introduction to probability theory and its applications," 1957.
+
+160
+00:25:31,527 --> 00:25:33,002
+9
+

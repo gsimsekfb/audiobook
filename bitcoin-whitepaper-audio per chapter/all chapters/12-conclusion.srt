@@ -1,0 +1,88 @@
+1
+00:00:00,100 --> 00:00:02,400
+12. Conclusion.
+
+2
+00:00:02,350 --> 00:00:07,700
+We have proposed a system for electronic transactions without relying on trust.
+
+3
+00:00:07,700 --> 00:00:18,262
+We started with the usual framework of coins made from digital signatures, which provides strong control of ownership, but is incomplete without a way to prevent double-spending.
+
+4
+00:00:18,262 --> 00:00:32,537
+To solve this, we proposed a peer-to-peer network using proof-of-work to record a public history of transactions that quickly becomes computationally impractical  for  an attacker to change if honest nodes control a majority of CPU power.
+
+5
+00:00:32,537 --> 00:00:36,325
+The network is robust in its unstructured simplicity.
+
+6
+00:00:36,325 --> 00:00:39,750
+Nodes work all at once with little coordination.
+
+7
+00:00:39,750 --> 00:00:48,612
+They do not need to be identified, since messages are not routed to any particular place and only need to be delivered on a best effort basis.
+
+8
+00:00:48,612 --> 00:00:55,937
+Nodes can leave  and  rejoin  the  network  at  will,  accepting  the  proof-of-work  chain  as  proof  of  what happened while they were gone.
+
+9
+00:00:55,937 --> 00:01:05,750
+They vote with their CPU power, expressing their acceptance of valid blocks by working on extending them and rejecting invalid blocks by refusing to work on them.
+
+10
+00:01:05,750 --> 00:01:10,737
+Any needed rules and incentives can be enforced with this consensus mechanism.
+
+11
+00:01:10,737 --> 00:01:12,087
+8
+
+12
+00:01:12,087 --> 00:01:24,350
+References [1] W. Dai, "b-money," http://www.weidai.com/bmoney.txt, 1998.
+
+13
+00:01:24,350 --> 00:01:29,100
+2] H. Massias, X.S. Avila, and J.-J.
+
+14
+00:01:29,100 --> 00:01:40,187
+Quisquater, "Design of a secure timestamping service with minimal trust requirements," In 20th Symposium on Information Theory in the Benelux, May 1999.
+
+15
+00:01:40,187 --> 00:01:53,112
+3] S. Haber, W.S. Stornetta, "How to time-stamp a digital document," In Journal of Cryptology, vol 3, no 2, pages 99-111, 1991.
+
+16
+00:01:53,112 --> 00:02:11,425
+4] D. Bayer, S. Haber, W.S. Stornetta, "Improving the efficiency and reliability of digital time-stamping," In Sequences II: Methods in Communication, Security and Computer Science, pages 329-334, 1993.
+
+17
+00:02:11,425 --> 00:02:25,962
+5] S. Haber, W.S. Stornetta, "Secure names for bit-strings," In Proceedings of the 4th ACM Conference on Computer and Communications Security, pages 28-35, April 1997.
+
+18
+00:02:25,962 --> 00:02:27,987
+6] A.
+
+19
+00:02:27,987 --> 00:02:40,937
+Back, "Hashcash - a denial of service counter-measure," http://www.hashcash.org/papers/hashcash.pdf, 2002.
+
+20
+00:02:40,937 --> 00:02:56,350
+7] R.C. Merkle, "Protocols for public key cryptosystems," In Proc. 1980 Symposium on Security and Privacy, IEEE Computer Society, pages 122-133, April 1980.
+
+21
+00:02:56,350 --> 00:03:03,412
+8] W. Feller, "An introduction to probability theory and its applications," 1957.
+
+22
+00:03:03,412 --> 00:03:04,887
+9
+

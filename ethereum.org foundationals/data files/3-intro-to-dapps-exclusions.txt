@@ -1,0 +1,19 @@
+Source: User-pasted Ethereum.org article, "Technical introduction to dapps"
+
+The article wording was retained. Markdown styling, heading anchors, and link destinations were removed for plain-text narration. Article link labels and descriptive text were retained.
+
+Items excluded:
+
+1. YAML front matter at the beginning: title metadata, empty description metadata, and language metadata. This is source metadata, not article narration.
+
+2. Heading anchor identifiers throughout the article (for example, {#prerequisites} and {#definition-of-a-dapp}). These are markup, not spoken content.
+
+3. Hyperlink destination URLs throughout the article. The associated link labels were retained where they form part of the article text; URLs are not useful when spoken aloud.
+
+4. Under "More of a visual learner?": the heading and embedded video. This is visual material without article narration.
+
+5. Under "Further reading": "Know of a community resource that helped you? Edit this page and add it!" This is an editorial contribution prompt, not article content.
+
+6. Markdown styling and list syntax were converted to plain prose. The list labels, descriptions, and tutorial details were retained.
+
+No article paragraphs were intentionally omitted. SRT subtitle generation was skipped as requested.

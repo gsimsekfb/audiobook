@@ -1,0 +1,24 @@
+1
+00:00:00,100 --> 00:00:03,337
+9. Combining and Splitting Value.
+
+2
+00:00:03,287 --> 00:00:11,587
+Although it would be possible to handle coins individually, it would be unwieldy to make a separate transaction for every cent in a transfer.
+
+3
+00:00:11,587 --> 00:00:18,012
+To allow value to be split and combined, transactions contain multiple inputs and outputs.
+
+4
+00:00:18,012 --> 00:00:31,787
+Normally there will be either a single input from a larger previous transaction or multiple inputs combining smaller amounts, and at most two outputs: one for the payment, and one returning the change, if any, back to the sender.
+
+5
+00:00:31,787 --> 00:00:41,287
+It should be noted that fan-out, where a transaction depends on several transactions, and those transactions depend on many more, is not a problem here.
+
+6
+00:00:41,287 --> 00:00:47,000
+There is never the need to extract a complete standalone copy of a transaction's history.
+

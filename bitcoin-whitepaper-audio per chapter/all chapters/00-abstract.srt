@@ -1,0 +1,36 @@
+1
+00:00:00,100 --> 00:00:01,837
+Abstract.
+
+2
+00:00:01,787 --> 00:00:11,525
+A purely peer-to-peer version of  electronic cash would allow online payments to be sent directly from one party to another without going through a financial institution.
+
+3
+00:00:11,525 --> 00:00:20,550
+Digital signatures provide part of the solution, but the main benefits are lost if a trusted third party is still required to prevent double-spending.
+
+4
+00:00:20,550 --> 00:00:25,662
+We propose a solution to the double-spending problem using a peer-to-peer network.
+
+5
+00:00:25,662 --> 00:00:36,262
+The network timestamps transactions by hashing them into an ongoing chain of hash-based proof-of-work, forming a record that cannot be changed without redoing the proof-of-work.
+
+6
+00:00:36,262 --> 00:00:44,600
+The longest chain not only serves as proof of the sequence of events witnessed, but proof that it came from the largest pool of CPU power.
+
+7
+00:00:44,600 --> 00:00:54,475
+As long as a majority of CPU power is controlled by nodes that are not cooperating to attack the network, they'll generate the longest chain and outpace attackers.
+
+8
+00:00:54,475 --> 00:00:58,037
+The network itself requires minimal structure.
+
+9
+00:00:58,037 --> 00:01:08,962
+Messages are broadcast on a best effort basis, and nodes can leave and rejoin the network at will, accepting the longest proof-of-work chain as proof of what happened while they were gone.
+

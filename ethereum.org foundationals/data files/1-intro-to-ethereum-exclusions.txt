@@ -1,0 +1,20 @@
+Source: Ethereum.org, "Technical intro to Ethereum"
+Source URL: https://ethereum.org/developers/docs/intro-to-ethereum/
+Canonical source: https://github.com/ethereum/ethereum-org-website/blob/dev/public/content/developers/docs/intro-to-ethereum/index.md
+License: Creative Commons Attribution 4.0 International (CC BY 4.0), https://creativecommons.org/licenses/by/4.0/
+
+The article wording was retained. Markdown styling, heading anchors, and link destinations were removed for plain-text reading. Article link labels were retained except for the glossary navigation links listed below.
+
+Items excluded:
+
+1. Under "What is a blockchain?": the invitation to view the blockchain hashing demo, the "Watch Anders explain hashes" prompt, and the embedded Blockchain 101 video. These refer to visual/video material rather than audiobook text.
+
+2. Under "Further reading": the "More of a visual learner?" video-series introduction, embedded Ethereum Basics video, playlist link, and associated visual-learning prompt. These are video-focused material.
+
+3. Under "Further reading": "Know of a community resource that helped you? Edit this page and add it!" This is an editorial contribution prompt, not article content.
+
+4. Page chrome: site navigation, table of contents, breadcrumbs, author/contributor controls, page-update date, helpfulness poll, footer links, and other navigation controls. These are not part of the article body.
+
+5. Source metadata: YAML front matter and non-spoken anchor identifiers. The article title and section titles were retained.
+
+6. Under "Terminology": the "More on" links for ETH, the EVM, nodes, accounts, transactions, blocks, and smart contracts. These are navigation links without useful spoken content once their destinations are removed.

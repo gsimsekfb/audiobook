@@ -1,0 +1,134 @@
+Transactions
+
+Transactions are cryptographically signed instructions from accounts. An account will initiate a transaction to update the state of the Ethereum network. The simplest transaction is transferring ETH from one account to another.
+
+Prerequisites
+
+To help you better understand this page, we recommend you first read Accounts and our introduction to Ethereum.
+
+What's a transaction?
+
+An Ethereum transaction refers to an action initiated by an externally-owned account, in other words an account managed by a human, not a contract. For example, if Bob sends Alice 1 ETH, Bob's account must be debited and Alice's must be credited. This state-changing action takes place within a transaction.
+
+Transactions, which change the state of the EVM, need to be broadcast to the whole network. Any node can broadcast a request for a transaction to be executed on the EVM; after this happens, a validator will execute the transaction and propagate the resulting state change to the rest of the network.
+
+Transactions require a fee and must be included in a validated block. To make this overview simpler we'll cover gas fees and validation elsewhere.
+
+A submitted transaction includes the following information:
+
+From: the address of the sender, that will be signing the transaction. This will be an externally-owned account as contract accounts cannot send transactions.
+
+To: the receiving address. If an externally-owned account, the transaction will transfer value. If a contract account, the transaction will execute the contract code.
+
+Signature: the identifier of the sender. This is generated when the sender's private key signs the transaction and confirms the sender has authorized this transaction.
+
+Nonce: a sequentially incrementing counter which indicates the transaction number from the account.
+
+Value: amount of ETH to transfer from sender to recipient, denominated in WEI, where 1 ETH equals 1e+18 wei.
+
+Input data: optional field to include arbitrary data.
+
+Gas limit: the maximum amount of gas units that can be consumed by the transaction. The EVM specifies the units of gas required by each computational step.
+
+Max priority fee per gas: the maximum price of the consumed gas to be included as a tip to the validator.
+
+Max fee per gas: the maximum fee per unit of gas willing to be paid for the transaction, inclusive of base fee per gas and max priority fee per gas.
+
+Gas is a reference to the computation required to process the transaction by a validator. Users have to pay a fee for this computation. The gas limit and max priority fee per gas determine the maximum transaction fee paid to the validator. More on Gas.
+
+A transaction object needs to be signed using the sender's private key. This proves that the transaction could only have come from the sender and was not sent fraudulently.
+
+But a transaction object needs to be signed using the sender's private key. This proves that the transaction could only have come from the sender and was not sent fraudulently.
+
+An Ethereum client like Geth will handle this signing process.
+
+With the signature hash, the transaction can be cryptographically proven that it came from the sender and submitted to the network.
+
+The data field
+
+The vast majority of transactions access a contract from an externally-owned account. Most contracts are written in Solidity and interpret their data field in accordance with the application binary interface, or ABI.
+
+The first four bytes specify which function to call, using the hash of the function's name and arguments. You can sometimes identify the function from the selector using a database of known signatures.
+
+The rest of the calldata is the arguments, encoded as specified in the ABI specs.
+
+For example, let's look at a transaction. The function selector identifies a function. There are several known functions with this signature. In this case the contract source code has been uploaded to Etherscan, so we know the function is transfer, with an address and an integer amount.
+
+The rest of the data contains the recipient and amount. According to the ABI specifications, integer values, such as addresses, which are 20-byte integers, appear in the ABI as 32-byte words, padded with zeros in the front. So we know that the to address is the recipient. The value is 0x3b0559f4, which equals 990206452.
+
+Transaction descriptors
+
+Because the data field contains opaque hexadecimal bytes, it can be extremely difficult to verify what action a transaction will actually perform. This blind signing vulnerability is addressed by Clear Signing through the use of transaction descriptors, defined by ERC-7730.
+
+The ERC-7730 specification uses transaction descriptors, often structured as JSON files, to enrich the data found in ABIs and structured messages, like EVM transaction calldata, EIP-712 messages, and EIP-4337 User Operations. Developers use these descriptors to map specific transaction variables directly into formatting templates, ensuring the underlying data remains machine-readable for applications.
+
+On the frontend, wallets use this formatting context to translate opaque bytecode into clear, human-readable information. By automatically resolving values like token addresses into recognized tickers, or amounts into decimals, users are presented with a plain-language summary of the transaction's exact intent, for example, 'Swap 1000 USDC for at least 0.25 WETH,' before they sign.
+
+Types of transactions
+
+On Ethereum there are a few different types of transactions:
+
+Regular transactions: a transaction from one account to another.
+
+Contract deployment transactions: a transaction without a to address, where the data field is used for the contract code.
+
+Execution of a contract: a transaction that interacts with a deployed smart contract. In this case, the to address is the smart contract address.
+
+On gas
+
+As mentioned, transactions cost gas to execute. Simple transfer transactions require 21000 units of Gas.
+
+So for Bob to send Alice 1 ETH at a base fee per gas of 190 gwei and a max priority fee per gas of 10 gwei, Bob will need to pay the following fee: 190 plus 10, multiplied by 21000, equals 4,200,000 gwei, or 0.0042 ETH.
+
+Bob's account will be debited minus 1.0042 ETH: 1 ETH for Alice plus 0.0042 ETH in gas fees.
+
+Alice's account will be credited plus 1.0 ETH.
+
+The base fee will be burned, minus 0.00399 ETH.
+
+The validator keeps the tip, plus 0.000210 ETH.
+
+Any gas not used in a transaction is refunded to the user account.
+
+Smart contract interactions
+
+Gas is required for any transaction that involves a smart contract.
+
+Smart contracts can also contain functions known as view or pure functions, which do not alter the state of the contract. As such, calling these functions from an EOA will not require any gas. The underlying RPC call for this scenario is eth_call.
+
+Unlike when accessed using eth_call, these view or pure functions are also commonly called internally, that is, from the contract itself or from another contract, which does cost gas.
+
+Transaction lifecycle
+
+Once the transaction has been submitted the following happens:
+
+A transaction hash is cryptographically generated.
+
+The transaction is then broadcasted to the network and added to a transaction pool consisting of all other pending network transactions.
+
+A validator must pick your transaction and include it in a block in order to verify the transaction and consider it successful.
+
+As time passes the block containing your transaction will be upgraded to justified, then finalized. These upgrades make it much more certain that your transaction was successful and will never be altered. Once a block is finalized it could only ever be changed by a network level attack that would cost many billions of dollars.
+
+Typed Transaction Envelope
+
+Ethereum originally had one format for transactions. Each transaction contained a nonce, gas price, gas limit, to address, value, data, v, r, and s. These fields are RLP-encoded.
+
+Ethereum has evolved to support multiple types of transactions to allow for new features such as access lists and EIP-1559 to be implemented without affecting legacy transaction formats.
+
+EIP-2718 is what allows for this behavior. Transactions are interpreted as a transaction type and a transaction payload.
+
+The transaction type is a number between 0 and 0x7f, for a total of 128 possible transaction types. The transaction payload is an arbitrary byte array defined by the transaction type.
+
+Based on the transaction type value, a transaction can be classified as follows:
+
+Type 0, Legacy Transactions. The original transaction format used since Ethereum's launch. They do not include features from EIP-1559 such as dynamic gas fee calculations or access lists for smart contracts. Legacy transactions lack a specific prefix indicating their type in their serialized form, starting with the byte 0xf8 when using Recursive Length Prefix, or RLP, encoding. The transaction type value for these transactions is 0x0.
+
+Type 1 Transactions. Introduced in EIP-2930 as part of Ethereum's Berlin Upgrade, these transactions include an access list parameter. This list specifies addresses and storage keys the transaction expects to access, helping to potentially reduce gas costs for complex transactions involving smart contracts. EIP-1559 fee market changes are not included in Type 1 transactions. Type 1 transactions also include a y-parity parameter, which can either be 0x0 or 0x1, indicating the parity of the y-value of the secp256k1 signature. They are identified by starting with the byte 0x01, and their transaction type value is 0x1.
+
+Type 2 Transactions, commonly referred to as EIP-1559 transactions, are transactions introduced in EIP-1559, in Ethereum's London Upgrade. They have become the standard transaction type on the Ethereum network. These transactions introduce a new fee market mechanism that improves predictability by separating the transaction fee into a base fee and a priority fee. They start with the byte 0x02 and include fields such as max priority fee per gas and max fee per gas. Type 2 transactions are now the default due to their flexibility and efficiency, especially favored during periods of high network congestion for their ability to help users manage transaction fees more predictably. The transaction type value for these transactions is 0x2.
+
+Type 3, Blob Transactions, were introduced in EIP-4844 as part of Ethereum's Dencun Upgrade. These transactions are designed to handle blob data, Binary Large Objects, more efficiently, particularly benefiting Layer 2 rollups by providing a way to post data to the Ethereum network at a lower cost. Blob transactions include additional fields such as blob versioned hashes, max fee per blob gas, and blob gas price. They start with the byte 0x03, and their transaction type value is 0x3. Blob transactions represent a significant improvement in Ethereum's data availability and scaling capabilities.
+
+Type 4 Transactions were introduced in EIP-7702 as part of Ethereum’s Pectra Upgrade. These transactions are designed to be forward-compatible with account abstraction. They allow EOAs to temporarily behave like smart contract accounts without compromising their original functionality. They include an authorization list parameter, which specifies the smart contract to which the EOA delegates its authority. After the transaction, the EOA’s code field will have the address of the delegated smart contract.
+

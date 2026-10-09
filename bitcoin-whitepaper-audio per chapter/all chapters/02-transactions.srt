@@ -1,0 +1,56 @@
+1
+00:00:00,100 --> 00:00:02,512
+2. Transactions.
+
+2
+00:00:02,462 --> 00:00:06,987
+We define an electronic coin as a chain of digital signatures.
+
+3
+00:00:06,987 --> 00:00:16,825
+Each owner transfers the coin to the next by digitally signing a hash of the previous transaction and the public key of the next owner and adding these to the end of the coin.
+
+4
+00:00:16,825 --> 00:00:21,675
+A payee can verify the signatures to verify the chain of ownership.
+
+5
+00:00:21,675 --> 00:00:27,662
+The problem of course is the payee can't verify that one of the owners did not double-spend the coin.
+
+6
+00:00:27,662 --> 00:00:35,487
+A common solution is to introduce a trusted central authority, or mint, that checks every transaction for double spending.
+
+7
+00:00:35,487 --> 00:00:45,437
+After each transaction, the coin must be returned to the mint to issue a new coin, and only coins issued directly from the mint are trusted not to be double-spent.
+
+8
+00:00:45,437 --> 00:00:55,525
+The  problem with  this solution  is that  the  fate of the entire  money system depends on the company running the mint, with every transaction having to go through them, just like a bank.
+
+9
+00:00:55,525 --> 00:01:01,750
+We need a way for the payee to know that the previous owners did not sign any earlier transactions.
+
+10
+00:01:01,750 --> 00:01:09,275
+For our purposes, the earliest transaction is the one that counts, so we don't care about later attempts to double-spend.
+
+11
+00:01:09,275 --> 00:01:15,162
+The only way to confirm the absence of a transaction is to be aware of all transactions.
+
+12
+00:01:15,162 --> 00:01:21,287
+In the mint based model, the mint was aware of all transactions and decided which arrived first.
+
+13
+00:01:21,287 --> 00:01:33,300
+To accomplish this without a trusted party, transactions must be publicly announced [1], and we need a system for participants to agree on a single history of the order in which they were received.
+
+14
+00:01:33,300 --> 00:01:40,312
+The payee needs proof that at the time of each transaction, the majority of nodes agreed it was the first received.
+

@@ -1,0 +1,23 @@
+Source: User-provided Ethereum.org article, "Blocks" (6-blocks.md)
+
+Article explanations were retained. Markdown styling, heading anchors, and hyperlink destination URLs were removed; link labels were retained. Markdown lists and tables were converted to labeled spoken text.
+
+Items excluded or converted:
+
+1. YAML front matter at the beginning: title, description, and language metadata. This is source metadata, not article narration.
+
+2. Heading anchor identifiers throughout the article (for example, {#prerequisites} and {#block-size}). These are markup, not spoken content.
+
+3. Hyperlink destination URLs throughout the article. Associated labels were retained, including Accounts, Transactions, introduction to Ethereum, Ethereum, proof-of-stake, average block time, Gas, and related topics.
+
+4. Under "Why blocks?": the transaction-in-a-block diagram and its adaptation credit. These are visual material.
+
+5. Markdown table syntax in "What's in a block?" was converted to spoken field descriptions. The block fields, body fields, attestation fields, execution payload header fields, execution payload fields, and withdrawal fields were retained.
+
+6. Markdown list, inline-code, emphasis, and heading syntax were converted to plain text for narration; the explanatory content and technical field names were retained.
+
+7. Under "Further reading": the community contribution prompt. It is an editorial instruction, not article content.
+
+8. Page component: the QuizWidget is an interactive element, not article narration.
+
+No explanatory article sections or field descriptions were intentionally omitted. Audio and SRT generation were not performed.

@@ -1,0 +1,20 @@
+1
+00:00:00,100 --> 00:00:02,662
+3. Timestamp Server.
+
+2
+00:00:02,612 --> 00:00:06,700
+The solution we propose begins with a timestamp server.
+
+3
+00:00:06,700 --> 00:00:17,187
+A timestamp server works by taking a hash of a block of items to be timestamped and widely publishing the hash, such as in a newspaper or Usenet post [2-5].
+
+4
+00:00:17,187 --> 00:00:24,000
+The timestamp proves that the data must have existed at the time, obviously, in order to get into the hash.
+
+5
+00:00:24,000 --> 00:00:33,025
+Each timestamp includes the previous timestamp in its hash, forming a chain, with each additional timestamp reinforcing the ones before it.
+

@@ -1,0 +1,17 @@
+Source: User-pasted Ethereum.org article, "Technical intro to ether"
+
+The article wording was retained. Markdown styling, heading anchors, and link destinations were removed for plain-text narration. Article link labels were retained.
+
+Items excluded:
+
+1. YAML front matter at the beginning: title metadata, description metadata, and language metadata. This is source metadata, not article narration.
+
+2. Heading anchor identifiers throughout the article (for example, {#prerequisites} and {#what-is-ether}). These are markup, not spoken content.
+
+3. Hyperlink destination URLs throughout the article. The associated link labels were retained in the narration where they form part of the article text; URLs are not useful when spoken aloud.
+
+4. Under "Further reading": "Know of a community resource that helped you? Edit this page and add it!" This is an editorial contribution prompt, not article content.
+
+5. Markdown table syntax in "Denominations of ether" was converted to spoken lines. Both denomination names, values, and common usages were retained; superscript exponents were expressed as powers for clear speech.
+
+No article paragraphs were intentionally omitted. SRT subtitle generation was skipped as requested.

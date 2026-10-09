@@ -1,0 +1,17 @@
+Source: User-pasted Ethereum.org article, "Web2 vs Web3"
+
+The article wording was retained. Markdown styling, heading anchors, and link destinations were removed for plain-text narration. Article link labels and bylines were retained.
+
+Items excluded:
+
+1. YAML front matter at the beginning: title metadata, description metadata, and language metadata. This is source metadata, not article narration.
+
+2. Heading anchor identifiers throughout the article (for example, {#web3-benefits} and {#further-reading}). These are markup, not spoken content.
+
+3. Hyperlink destination URLs throughout the article, including links in the introduction and Further reading. Associated link labels and attribution text were retained; URLs are not useful when spoken aloud.
+
+4. Markdown table syntax in "Practical comparisons" and "Centralization vs decentralization" was converted to spoken comparisons. Column labels and all table content were retained.
+
+5. Markdown list and emphasis syntax was converted to plain text. List content, headings, titles, and bylines were retained.
+
+No article paragraphs were intentionally omitted. Audio generation was not performed; the narration text is ready for review.

@@ -1,0 +1,25 @@
+Source: User-pasted Ethereum.org article, "Ethereum accounts"
+
+Article wording was retained in the narration, except where visual-only material or machine-readable examples do not work well spoken aloud. Markdown styling, heading anchors, and link destination URLs were removed. Article link labels were retained.
+
+Items excluded:
+
+1. YAML front matter at the beginning: title metadata, description metadata, and language metadata. This is source metadata, not article narration.
+
+2. Heading anchor identifiers throughout the article (for example, {#prerequisites} and {#account-creation}). These are markup, not spoken content.
+
+3. Hyperlink destination URLs throughout the article. Associated link labels were retained, including Introduction to Ethereum, smart contracts, the Merkle Patricia Trie, the Elliptic Curve Digital Signature Algorithm, Clef, Geth documentation, validator keys, Etherscan, and related topics.
+
+4. Under "An account examined": the account diagram and its image caption/adaptation credit. This is visual material; the four account fields are explained in the narration.
+
+5. Under "Account creation": the example 64-character private-key value, the example 42-character public address, and the example contract address under "Contract accounts." These hexadecimal strings are machine-readable examples that are not useful to read aloud; the surrounding explanations remain.
+
+6. Under "Account creation": the Clef command-line transcript, including the password prompt and sample generated address, key-file path, and warnings. This is terminal output; the surrounding explanation of Clef is retained.
+
+7. Under "A visual demo": the heading, video introduction, and both embedded videos. These are video-specific prompts and embeds.
+
+8. Under "Further reading": "Know of a community resource that helped you? Edit this page and add it!" This is an editorial contribution prompt, not article content.
+
+9. Page components: the Divider and QuizWidget. These are interactive/layout elements rather than spoken article content.
+
+No explanatory article paragraphs were intentionally omitted. No audio or SRT file was generated; the narration text is provided for review first.
