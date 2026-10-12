@@ -40,8 +40,6 @@ Every block has a base fee which acts as a reserve price. To be eligible for inc
 
 The base fee is calculated by a formula that compares the size of the previous block, the amount of gas used for all the transactions, with the target size, half of the gas limit. The base fee will increase or decrease by a maximum of 12.5 percent per block if the target block size is above or below the target, respectively. This exponential growth makes it economically non-viable for block size to remain high indefinitely.
 
-The table in the original article demonstrates a rising base fee over successive blocks. In practice, the key point is that wallet software can use a predictable maximum base fee for the next block, and the fee adjusts rapidly when blocks fill up. This is important for preventing prolonged spikes in network demand.
-
 Priority fee, or tips
 
 The priority fee, or tip, incentivizes validators to maximize the number of transactions in a block, constrained only by the block gas limit. Without tips, a rational validator could include fewer or even zero transactions without any direct execution layer or consensus layer penalty, as staking rewards are independent of how many transactions are in a block. Additionally, tips allow users to outbid others for priority within the same block, effectively signaling urgency.
@@ -90,6 +88,3 @@ Related tools
 
 You can also use tools such as Blocknative's Gas Platform and Gas Network to estimate gas usage and monitor gas conditions across networks.
 
-In summary
-
-Gas fees are a core mechanism that keeps Ethereum secure, ensures that transaction execution has a resource limit, and helps users understand the costs of interacting with the network. They are a practical part of the ETH economy and an essential concept for anyone using or building on Ethereum.

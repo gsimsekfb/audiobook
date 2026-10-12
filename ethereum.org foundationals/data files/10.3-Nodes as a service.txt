@@ -37,7 +37,3 @@ What are the cons of using a node service?
 By using a node service, you are centralizing the infrastructure aspect of your product. For this reason, projects that hold decentralization to the utmost importance might prefer self-hosting nodes rather than outsourcing to a third party.
 
 Read more about the benefits of running your own node.
-
-Summary
-
-Node services provide an easier path to interacting with Ethereum, especially if you do not want to manage infrastructure yourself. They are useful for developers and teams who want to move quickly, but they come with trade-offs around decentralization and self-sovereignty.

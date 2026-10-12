@@ -59,7 +59,3 @@ Client diversity dashboards
 Several dashboards give real-time client diversity statistics for the execution and consensus layers.
 
 For the consensus layer, the article highlights Rated.network and clientdiversity.org. For the execution layer, it highlights supermajority.info and Ethernodes.
-
-In summary
-
-Client diversity is not just an abstract ideal. It is a practical safety feature for Ethereum. By distributing the network across multiple client implementations, Ethereum reduces the risk of a single bug, a single attack, or a single operational failure taking down or destabilizing the network.

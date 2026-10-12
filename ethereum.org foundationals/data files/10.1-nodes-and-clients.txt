@@ -123,3 +123,79 @@ Consensus clients
 There are multiple consensus clients, previously known as Eth2 clients, to support the consensus upgrades. They are responsible for all consensus-related logic, including the fork-choice algorithm, processing attestations, and managing proof-of-stake rewards and penalties.
 
 The original article lists Lighthouse, Lodestar, Nimbus, Prysm, Teku, and Grandine as the main clients. The details are technical and client-specific, but the main point is that multiple consensus client implementations exist to support the same protocol and improve network resilience.
+
+
+Lighthouse
+Lighthouse is a consensus client implementation written in Rust under the Apache-2.0 license. It is maintained by Sigma Prime and has been stable and production-ready since Beacon Chain genesis. It is relied upon by various enterprises, staking pools and individuals. It aims to be secure, performant and interoperable in a wide range of environments, from desktop PCs to sophisticated automated deployments.
+
+Documentation can be found in Lighthouse Book
+
+Lodestar
+Lodestar is a production-ready consensus client implementation written in Typescript under the LGPL-3.0 license. It is maintained by ChainSafe Systems and is the newest of the consensus clients for solo-stakers, developers and researchers. Lodestar consists of a beacon node and validator client powered by JavaScript implementations of Ethereum protocols. Lodestar aims to improve Ethereum usability with light clients, expand accessibility to a larger group of developers and further contribute to ecosystem diversity.
+
+More information can be found on the Lodestar website
+
+Nimbus
+Nimbus is a consensus client implementation written in Nim under the Apache-2.0 license. It is a production-ready client in use by solo-stakers and staking pools. Nimbus is designed for resource efficiency, making it easy to run on resource-restricted devices and enterprise infrastructure with equal ease, without compromising stability or reward performance. A lighter resource footprint means the client has a greater margin of safety when the network is under stress.
+
+Learn more in Nimbus docs
+
+Prysm
+Prysm is a full-featured, open source consensus client written in Go under the GPL-3.0 license. It features an optional webapp UI and prioritizes user experience, documentation, and configurability for both stake-at-home and institutional users.
+
+Visit Prysm docs to learn more.
+
+Teku
+Teku is one of the original Beacon Chain genesis clients. Alongside the usual goals (security, robustness, stability, usability, performance), Teku specifically aims to comply fully with all the various consensus client standards.
+
+Teku offers very flexible deployment options. The beacon node and validator client can be run together as a single process, which is extremely convenient for solo stakers, or nodes can be run separately for sophisticated staking operations. In addition, Teku is fully interoperable with Web3Signer for signing key security and slashing protection.
+
+Teku is written in Java and is Apache 2.0 licensed. It is developed by the Protocols team at ConsenSys that is also responsible for Besu and Web3Signer. Learn more in Teku docs.
+
+Grandine
+Grandine is a consensus client implementation, written in Rust under the GPL-3.0 license. It is maintained by the Grandine Core Team and is fast, high-performance and lightweight. It fits a wide range of stakers from solo stakers running on low-resource devices such as Raspberry Pi to large institutional stakers running tens of thousands of validators.
+
+Documentation can be found in the Grandine Book
+
+Synchronization modes
+To follow and verify current data in the network, the Ethereum client needs to sync with the latest network state. This is done by downloading data from peers, cryptographically verifying their integrity, and building a local blockchain database.
+
+Synchronization modes represent different approaches to this process with various trade-offs. Clients also vary in their implementation of sync algorithms. Always refer to the official documentation of your chosen client for specifics on implementation.
+
+Execution layer sync modes
+The execution layer may be run in different modes to suit different use cases, from re-executing the blockchain's world state to only syncing with the tip of the chain from a trusted checkpoint.
+
+Full sync
+A full sync downloads all blocks (including headers and block bodies) and regenerates the state of the blockchain incrementally by executing every block from genesis.
+
+Minimizes trust and offers the highest security by verifying every transaction.
+With an increasing number of transactions, it can take days to weeks to process all transactions.
+Archive nodes perform a full sync to build (and retain) a complete history of the state changes made by every transaction in every block.
+
+Fast sync
+Like a full sync, a fast sync downloads all blocks (including headers, transactions, and receipts). However, instead of re-processing the historical transactions, a fast sync relies on the receipts until it reaches a recent head, when it switches to importing and processing blocks to provide a full node.
+
+Fast sync strategy.
+Reduces processing demand in favor of bandwidth usage.
+Snap sync
+Snap syncs also verify the chain block-by-block. However, instead of starting at the genesis block, a snap sync starts at a more recent 'trusted' checkpoint that is known to be part of the true blockchain. The node saves periodic checkpoints while deleting data older than a certain age. These snapshots are used to regenerate state data as needed, rather than storing it forever.
+
+Fastest sync strategy, currently default in Ethereum Mainnet.
+Saves a lot of disk usage and network bandwidth without sacrificing security.
+
+Light sync
+Light client mode downloads all block headers, block data, and verifies some randomly. Only syncs tip of the chain from the trusted checkpoint.
+
+Gets only the latest state while relying on trust in developers and consensus mechanism.
+Client ready to use with current network state in a few minutes.
+NB Light sync does not yet work with proof-of-stake Ethereum - new versions of light sync should ship soon!
+
+Consensus layer sync modes
+Optimistic sync
+Optimistic sync is a post-merge synchronization strategy designed to be opt-in and backwards compatible, allowing execution nodes to sync via established methods. The execution engine can optimistically import beacon blocks without fully verifying them, find the latest head, and then start syncing the chain with the above methods. Then, after the execution client has caught up, it will inform the consensus client of the validity of the transactions in the Beacon Chain.
+
+
+Checkpoint sync
+A checkpoint sync, also known as weak subjectivity sync, creates a superior user experience for syncing a Beacon Node. It's based on assumptions of weak subjectivity which enables syncing the Beacon Chain from a recent weak subjectivity checkpoint instead of genesis. Checkpoint syncs make the initial sync time significantly faster with similar trust assumptions as syncing from genesis.
+
+In practice, this means your node connects to a remote service to download recent finalized states and continues verifying data from that point. The third party providing the data is trusted and should be picked carefully.
