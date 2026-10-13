@@ -1,22 +1,35 @@
 
+### Kokoro-82MB
 
 ```
-edge-tts --voice en-US-EricNeural --text "A short paragraph becomes an audiobook." --write-media output.mp3
+Model: kokoro-v1.0.onnx  
+Voices: voices-v1.0.bin  
+
+Audio creation time at local: 
+19KB txt -> 15mins
+Surface Pro 7, 8GB
 ```
 
+From file:  
 ```
-edge-tts --voice en-US-EricNeural --file extracted.txt --write-media audiobook.mp3
+.\.venv\Scripts\python.exe .\kokoro_tts.py --voice am_adam --file '10.2-client-diversity.txt' --write-media '10-2.mp3'
+```
+
+From text:  
+```
+.\.venv\Scripts\python.exe .\kokoro_tts.py --voice am_adam --text "A short paragraph." --write-media .\output.mp3
 ```
 
 
+### edge-tts
 
-
+From file:  
 ```
-Continue with other chapters. 
-Read  #file:AGENTS.md first. 
-txt files generated from md file contains text "only"  from original source, never add/change text in txt files.
-Exclude audio generation. 
-Show me your summary plan. 
-Ask for my approval before start working. 
+.\.venv\Scripts\edge-tts.exe --voice en-US-EricNeural --file extracted.txt --write-media audiobook.mp3
+```
+
+From text:  
+```
+.\.venv\Scripts\edge-tts.exe --voice en-US-EricNeural --text "A short paragraph." --write-media .\output.mp3
 ```
 
