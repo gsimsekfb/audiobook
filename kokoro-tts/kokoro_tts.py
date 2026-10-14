@@ -16,8 +16,8 @@ def main() -> None:
     source.add_argument("--file", type=Path, help="UTF-8 text file to synthesize.")
     parser.add_argument("--voice", default="am_adam")
     parser.add_argument("--write-media", required=True, type=Path)
-    parser.add_argument("--model", type=Path, default=ROOT / "kokoro-v1.0.onnx")
-    parser.add_argument("--voices", type=Path, default=ROOT / "voices-v1.0.bin")
+    parser.add_argument("--model", type=Path, default=ROOT / "../kokoro-model/kokoro-v1.0.onnx")
+    parser.add_argument("--voices", type=Path, default=ROOT / "../kokoro-model/voices-v1.0.bin")
     args = parser.parse_args()
 
     output = args.write_media

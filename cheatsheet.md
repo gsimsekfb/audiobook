@@ -1,4 +1,23 @@
 
+### edge-tts
+
+From file:  
+
+```
+uvx --from edge-tts edge-tts --voice en-US-EricNeural --file clean.txt --write-media audiobook.mp3
+```
+
+or   
+```
+.\.venv\Scripts\edge-tts.exe --voice en-US-EricNeural --file clean.txt --write-media audiobook.mp3
+```
+
+From text:  
+```
+uvx --from edge-tts edge-tts --voice en-US-EricNeural --text "A short paragraph." --write-media .\output.mp3
+```
+
+
 ### Kokoro-82MB
 
 ```
@@ -8,6 +27,11 @@ Voices: voices-v1.0.bin
 Audio creation time at local: 
 19KB txt -> 15mins
 Surface Pro 7, 8GB
+```
+
+With `uvx`        
+```
+uvx --with kokoro-onnx --with soundfile --with lameenc python .\kokoro-tts\kokoro_tts.py --voice am_adam --text "The Ethereum Virtual Machine, or EVM, is a decentralized virtual environment" --write-media .\kokoro-test-audio-evm.mp3
 ```
 
 From file:  
@@ -43,16 +67,4 @@ From text:
 .\.chatterbox-venv\Scripts\python.exe .\chatterbox_tts.py --language en --text "A short paragraph." --write-media .\output.wav
 ```
 
-
-### edge-tts
-
-From file:  
-```
-.\.venv\Scripts\edge-tts.exe --voice en-US-EricNeural --file extracted.txt --write-media audiobook.mp3
-```
-
-From text:  
-```
-.\.venv\Scripts\edge-tts.exe --voice en-US-EricNeural --text "A short paragraph." --write-media .\output.mp3
-```
 
