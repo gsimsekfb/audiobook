@@ -1,6 +1,7 @@
 
 //// Quick
 - add year info folders
+- how the different tts solutions work, from text to audio creation. 
 
 
 -----------------------------------------------------------

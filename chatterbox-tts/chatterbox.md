@@ -5,6 +5,31 @@ Chatterbox Multilingual V3 is a local 500M-parameter speech model supporting
 Like Kokoro, its model files are downloaded manually and loaded from a local
 directory; the CLI does not automatically download model weights.
 
+
+## Blocking issue
+
+``` 
+PS C:\code\audiobook> uv run --python 3.11 --with "chatterbox-tts @ git+https://github.com/resemble-ai/chatterbox.git" --with soundfile --with lameenc --no-project .\chatterbox_tts.py --language en --file '.\ethereum.org foundationals\data files\10.3-Nodes as a service.txt' --audio-prompt ".\ethereum.org foundationals\10.3-Nodes as a service.mp3" --write-media ".\output\my-test.mp3" --device cpu
+``` 
+``` 
+Sampling: 100%|████████████████████████████| 1000/1000 [12:17<00:00,  1.36it/s]
+Created output\my-test.mp3
+``` 
+===
+
+Issue:  
+- This cmd created an unknown language audio file 625 KB
+- 40sec capped output
+
+Root cause:  
+- It hit Chatterbox’s 1,000-token limit while processing the whole article at once, so the output was likely truncated or garbled. The `en` language setting and input text were English.
+
+- It’s a safety cap so generation can’t run indefinitely. Chatterbox stops earlier if it emits its end token; your log shows it hit the cap, likely cutting off the long article.
+
+
+Possible Solution:  
+- The current command has no option to raise the cap. We can split long text into smaller chunks, or modify Chatterbox’s hard-coded limit; chunking is the more reliable approach.
+
 ## Isolated setup on Windows
 
 Keep Chatterbox in its own Python 3.11 environment so its PyTorch dependencies
