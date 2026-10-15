@@ -29,7 +29,7 @@ export async function initKokoro(onProgress) {
   );
 
   // Filter to American English voices only
-  const all = ttsInstance.list_voices();
+  const all = ttsInstance.voices;
   voiceList = Object.entries(all)
     .filter(([id]) => id.startsWith("af_") || id.startsWith("am_"))
     .map(([id, meta]) => ({
