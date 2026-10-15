@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Text to Speech — Audiobook Tools</title>
+  <meta name="description" content="Convert text to natural speech using Kokoro (runs in your browser) or Edge TTS (Microsoft voices). Free, no sign-up." />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <header class="header">
+    <h1>Text to Speech</h1>
+    <p>Kokoro (in-browser) &amp; Edge TTS (Microsoft voices)</p>
+  </header>
+
+  <main class="card">
+
+    <!-- Engine Tabs -->
+    <div class="tabs" role="tablist">
+      <button class="tab" id="tab-kokoro" role="tab" aria-selected="false">
+        🧠 Kokoro
+      </button>
+      <button class="tab active" id="tab-edge" role="tab" aria-selected="true">
+        🔊 Edge TTS
+      </button>
+    </div>
+
+    <!-- Kokoro info note -->
+    <div class="note" id="kokoro-note" style="display:none">
+      Kokoro runs entirely in your browser. The model (~86 MB) is downloaded once and cached.
+      American English voices only. Output: WAV.
+    </div>
+
+    <!-- Voice -->
+    <div class="field">
+      <label for="voice-select">Voice</label>
+      <select id="voice-select">
+        <option value="">Loading…</option>
+      </select>
+    </div>
+
+    <!-- Text Input -->
+    <div class="field">
+      <label for="text-input">Text</label>
+      <textarea id="text-input" placeholder="Paste or type text to convert…"></textarea>
+      <div class="char-count" id="char-count">0 chars</div>
+    </div>
+
+    <!-- Convert -->
+    <button class="convert-btn" id="convert-btn">
+      <span id="convert-text">Convert</span>
+      <div class="spinner" id="spinner"></div>
+    </button>
+
+    <!-- Progress -->
+    <div class="progress" id="progress-bar">
+      <div class="progress-fill" id="progress-fill"></div>
+      <div class="progress-text" id="progress-text">0%</div>
+    </div>
+
+    <!-- Status -->
+    <div class="status" id="status"></div>
+
+    <!-- Audio Player & Download -->
+    <div class="player-section" id="player-section">
+      <audio controls id="audio-player"></audio>
+      <button class="download-btn" id="download-btn">
+        ⬇ Download
+      </button>
+    </div>
+
+  </main>
+
+  <footer class="footer">
+    Kokoro: <a href="https://huggingface.co/hexgrad/Kokoro-82M" target="_blank">Kokoro-82M</a> via
+    <a href="https://github.com/huggingface/transformers.js" target="_blank">kokoro-js</a> &middot;
+    Edge TTS: Microsoft Read Aloud (unofficial)
+  </footer>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
