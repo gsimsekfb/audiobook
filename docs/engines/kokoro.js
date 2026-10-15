@@ -44,35 +44,94 @@ export async function initKokoro(onProgress) {
 
 /**
  * Generate speech from text. Returns a Blob (audio/wav).
- * Uses kokoro-js built-in streaming to handle long text automatically.
+ * Splits long text because kokoro-js generates one bounded audio tensor per call.
  */
 export async function generateKokoro(tts, text, voiceId, onChunkProgress) {
-  // Use streaming mode: kokoro-js splits at sentence boundaries internally
-  const stream = tts.generate(text, { voice: voiceId, speed: 1.0 });
-
-  // If streaming is available (returns async iterable), collect chunks
-  if (stream[Symbol.asyncIterator]) {
-    const pcmChunks = [];
-    let sampleRate = 24000;
-    let idx = 0;
-    for await (const chunk of stream) {
-      sampleRate = chunk.sampling_rate || sampleRate;
-      pcmChunks.push(chunk.audio);
-      idx++;
-      if (onChunkProgress) onChunkProgress(idx);
-    }
-    // Join PCM Float32Arrays
-    const totalLen = pcmChunks.reduce((s, c) => s + c.length, 0);
-    const joined = new Float32Array(totalLen);
-    let off = 0;
-    for (const c of pcmChunks) { joined.set(c, off); off += c.length; }
-    return float32ToWavBlob(joined, sampleRate);
+  if (!text || !text.trim()) {
+    throw new Error("Enter some text to convert.");
   }
 
-  // Non-streaming fallback (single result)
-  const result = await stream;
-  const sr = result.sampling_rate || 24000;
-  return float32ToWavBlob(result.audio, sr);
+  const pcmChunks = [];
+  let sampleRate = 24000;
+  const chunks = splitText(text);
+
+  for (let idx = 0; idx < chunks.length; idx++) {
+    const result = await tts.generate(chunks[idx], { voice: voiceId, speed: 1.0 });
+    const pcm = extractAudioSamples(result);
+    if (!pcm || pcm.length === 0) {
+      throw new Error("Kokoro returned no audio data.");
+    }
+    sampleRate = Number(result?.sampling_rate ?? result?.sample_rate ?? sampleRate);
+    pcmChunks.push(pcm);
+    if (onChunkProgress) onChunkProgress(idx + 1);
+  }
+
+  const totalLen = pcmChunks.reduce((s, c) => s + c.length, 0);
+  const joined = new Float32Array(totalLen);
+  let off = 0;
+  for (const c of pcmChunks) {
+    joined.set(c, off);
+    off += c.length;
+  }
+  return float32ToWavBlob(joined, sampleRate);
+}
+
+function splitText(text, maxLen = 300) {
+  const chunks = [];
+  let remaining = text;
+
+  while (remaining.length > maxLen) {
+    let splitAt = -1;
+    for (let i = maxLen; i > 0; i--) {
+      if (".!?\n".includes(remaining[i - 1]) && (remaining[i] === " " || remaining[i] === "\n")) {
+        splitAt = i;
+        break;
+      }
+    }
+    if (splitAt <= 0) {
+      splitAt = remaining.lastIndexOf(" ", maxLen);
+      if (splitAt <= 0) splitAt = maxLen;
+    }
+
+    chunks.push(remaining.slice(0, splitAt));
+    remaining = remaining.slice(splitAt);
+  }
+
+  if (remaining.length > 0) chunks.push(remaining);
+  return chunks;
+}
+
+function extractAudioSamples(value) {
+  if (!value) return null;
+
+  const candidates = [
+    value.audio,
+    value.samples,
+    value.data,
+    value.wav,
+    value.buffer,
+  ];
+
+  for (const candidate of candidates) {
+    const samples = toFloat32Array(candidate);
+    if (samples && samples.length > 0) return samples;
+  }
+
+  return toFloat32Array(value);
+}
+
+function toFloat32Array(value) {
+  if (value == null) return null;
+
+  if (value instanceof Float32Array) return value;
+  if (ArrayBuffer.isView(value) || Array.isArray(value)) return Float32Array.from(value);
+  if (ArrayBuffer.isView(value?.data)) {
+    return Float32Array.from(value.data);
+  }
+  if (typeof value === "object" && typeof value.length === "number") {
+    return Float32Array.from(value);
+  }
+  return null;
 }
 
 /** Convert Float32Array PCM to a WAV Blob. */
