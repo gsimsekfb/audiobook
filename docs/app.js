@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Init
   updateCharCount();
-  switchEngine("edge");
+  switchEngine("kokoro");
 });
 
 // ===== Engine Switching =====
