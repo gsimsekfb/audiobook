@@ -3,7 +3,7 @@ import { initKokoro, generateKokoro } from "./engines/kokoro.js";
 import { fetchEdgeVoices, generateEdge } from "./engines/edge.js";
 
 // ===== State =====
-let currentEngine = "kokoro"; // "kokoro" | "edge"
+let currentEngine = "edge"; // "kokoro" | "edge"
 let kokoroTts = null;
 let kokoroVoices = [];
 let edgeVoices = [];
@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Init
   updateCharCount();
-  switchEngine("kokoro");
+  switchEngine("edge");
 });
 
 // ===== Engine Switching =====

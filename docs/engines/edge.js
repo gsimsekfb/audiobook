@@ -70,7 +70,11 @@ export async function generateEdge(proxyUrl, text, voice, rate, onChunkProgress)
       throw new Error(err.error || `TTS request failed: ${resp.status}`);
     }
 
-    audioParts.push(new Uint8Array(await resp.arrayBuffer()));
+    const part = new Uint8Array(await resp.arrayBuffer());
+    if (part.length === 0) {
+      throw new Error("Received empty audio (0 bytes) from Edge TTS Worker. Please redeploy edge-tts-worker/worker.js.");
+    }
+    audioParts.push(part);
     if (onChunkProgress) onChunkProgress(i + 1, chunks.length);
   }
 

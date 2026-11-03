@@ -14,7 +14,7 @@ or
 
 From text:  
 ```
-uvx --from edge-tts edge-tts --voice en-US-EricNeural --text "A short paragraph." --write-media .\output.mp3
+uvx --from edge-tts edge-tts --voice en-US-EricNeural --text "A short paragraph." --write-media output.mp3
 ```
 
 

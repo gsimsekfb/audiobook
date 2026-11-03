@@ -303,32 +303,53 @@ async function synthesize(text, voice, rate) {
 
   const ws = resp.webSocket;
   if (!ws) throw new Error("WebSocket upgrade failed");
+  try { ws.binaryType = "arraybuffer"; } catch (_) {}
   ws.accept();
 
   return new Promise((resolve, reject) => {
     const chunks = [];
+    const pending = [];
     let done = false;
     const timeout = setTimeout(() => {
       if (!done) { done = true; ws.close(); reject(new Error("Timeout")); }
     }, 30000);
+
+    let lastFrame = null;
+    const sameBytes = (a, b) => {
+      if (!a || a.length !== b.length) return false;
+      for (let i = 0; i < a.length; i++) if (a[i] !== b[i]) return false;
+      return true;
+    };
+
+    function handleBinary(ab) {
+      const buf = ab instanceof Uint8Array ? ab : new Uint8Array(ab);
+      if (buf.length < 2) return;
+      // Skip duplicate delivery of the same frame (caused echo / doubled audio)
+      if (sameBytes(lastFrame, buf)) return;
+      lastFrame = buf;
+      const hLen = (buf[0] << 8) | buf[1];
+      if (hLen + 2 > buf.length) return;
+      const hdr = new TextDecoder().decode(buf.slice(2, 2 + hLen));
+      if (hdr.includes("Path:audio") && hdr.includes("Content-Type:audio/mpeg")) {
+        const audio = buf.slice(hLen + 2);
+        if (audio.length > 0) chunks.push(audio);
+      }
+    }
 
     ws.addEventListener("message", (ev) => {
       if (done) return;
       if (typeof ev.data === "string") {
         if (ev.data.includes("Path:turn.end")) {
           done = true; clearTimeout(timeout); ws.close();
-          resolve(concatBytes(chunks));
+          Promise.all(pending).then(() => {
+            if (chunks.length > 0) resolve(concatBytes(chunks));
+            else reject(new Error("No audio received from Edge TTS"));
+          }).catch(reject);
         }
+      } else if (ev.data && typeof ev.data.arrayBuffer === "function") {
+        pending.push(ev.data.arrayBuffer().then(handleBinary));
       } else {
-        const buf = new Uint8Array(ev.data);
-        if (buf.length < 2) return;
-        const hLen = (buf[0] << 8) | buf[1];
-        if (hLen + 2 > buf.length) return;
-        const hdr = new TextDecoder().decode(buf.slice(2, hLen));
-        if (hdr.includes("Path:audio") && hdr.includes("Content-Type:audio/mpeg")) {
-          const audio = buf.slice(hLen + 2);
-          if (audio.length > 0) chunks.push(audio);
-        }
+        handleBinary(ev.data);
       }
     });
 
@@ -339,8 +360,10 @@ async function synthesize(text, voice, rate) {
     ws.addEventListener("close", () => {
       if (!done) {
         done = true; clearTimeout(timeout);
-        if (chunks.length > 0) resolve(concatBytes(chunks));
-        else reject(new Error("Connection closed without audio"));
+        Promise.all(pending).then(() => {
+          if (chunks.length > 0) resolve(concatBytes(chunks));
+          else reject(new Error("Connection closed without audio"));
+        }).catch(reject);
       }
     });
 
