@@ -2,3 +2,4 @@
 /.chatterbox-venv/
 /chatterbox-model/
 /kokoro-model/
+edge-tts-worker/.wrangler/
