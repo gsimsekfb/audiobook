@@ -279,7 +279,30 @@ function concatBytes(arrays) {
 }
 
 // ===== WebSocket TTS =====
-async function synthesize(text, voice, rate) {
+function splitText(text, maxLen = 1800) {
+  if (text.length <= maxLen) return [text];
+  const chunks = [];
+  let remaining = text;
+  while (remaining.length > maxLen) {
+    let splitAt = -1;
+    for (let i = maxLen; i > 0; i--) {
+      if (".!?\n".includes(remaining[i - 1]) && (i === remaining.length || remaining[i] === " " || remaining[i] === "\n")) {
+        splitAt = i;
+        break;
+      }
+    }
+    if (splitAt <= 0) {
+      splitAt = remaining.lastIndexOf(" ", maxLen);
+      if (splitAt <= 0) splitAt = maxLen;
+    }
+    chunks.push(remaining.slice(0, splitAt));
+    remaining = remaining.slice(splitAt).trimStart();
+  }
+  if (remaining.length > 0) chunks.push(remaining);
+  return chunks;
+}
+
+async function synthesizeChunkOnce(text, voice, rate) {
   const connId = crypto.randomUUID().replace(/-/g, "");
   const gec = generateSecMsGec();
   const muid = generateMuid();
@@ -310,9 +333,16 @@ async function synthesize(text, voice, rate) {
     const chunks = [];
     const pending = [];
     let done = false;
-    const timeout = setTimeout(() => {
-      if (!done) { done = true; ws.close(); reject(new Error("Timeout")); }
-    }, 30000);
+    const IDLE_TIMEOUT_MS = 15000;
+    let timeout = null;
+
+    const resetTimeout = () => {
+      if (timeout) clearTimeout(timeout);
+      timeout = setTimeout(() => {
+        if (!done) { done = true; try { ws.close(); } catch (_) {} reject(new Error("Timeout")); }
+      }, IDLE_TIMEOUT_MS);
+    };
+    resetTimeout();
 
     let lastFrame = null;
     const sameBytes = (a, b) => {
@@ -338,6 +368,7 @@ async function synthesize(text, voice, rate) {
 
     ws.addEventListener("message", (ev) => {
       if (done) return;
+      resetTimeout();
       if (typeof ev.data === "string") {
         if (ev.data.includes("Path:turn.end")) {
           done = true; clearTimeout(timeout); ws.close();
@@ -360,10 +391,7 @@ async function synthesize(text, voice, rate) {
     ws.addEventListener("close", () => {
       if (!done) {
         done = true; clearTimeout(timeout);
-        Promise.all(pending).then(() => {
-          if (chunks.length > 0) resolve(concatBytes(chunks));
-          else reject(new Error("Connection closed without audio"));
-        }).catch(reject);
+        reject(new Error("Connection closed before turn.end"));
       }
     });
 
@@ -382,6 +410,30 @@ async function synthesize(text, voice, rate) {
     const ssml = mkSsml(voice, rate, escaped);
     ws.send(ssmlHeaders(connId, dateToString(), ssml));
   });
+}
+
+async function synthesizeChunk(text, voice, rate, maxRetries = 3) {
+  let lastErr;
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    try {
+      return await synthesizeChunkOnce(text, voice, rate);
+    } catch (err) {
+      lastErr = err;
+      if (attempt < maxRetries) {
+        await new Promise((r) => setTimeout(r, 500 * attempt));
+      }
+    }
+  }
+  throw lastErr;
+}
+
+async function synthesize(text, voice, rate) {
+  const textChunks = splitText(text, 1800);
+  const audioParts = [];
+  for (const chunk of textChunks) {
+    audioParts.push(await synthesizeChunk(chunk, voice, rate));
+  }
+  return audioParts.length === 1 ? audioParts[0] : concatBytes(audioParts);
 }
 
 // ===== Voice List =====

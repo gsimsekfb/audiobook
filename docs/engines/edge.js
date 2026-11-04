@@ -25,7 +25,7 @@ export async function fetchEdgeVoices(proxyUrl) {
  * Split text at sentence boundaries into chunks of roughly maxLen characters.
  * Never modifies the text content itself.
  */
-function splitText(text, maxLen = 3000) {
+function splitText(text, maxLen = 1800) {
   if (text.length <= maxLen) return [text];
   const chunks = [];
   let remaining = text;
