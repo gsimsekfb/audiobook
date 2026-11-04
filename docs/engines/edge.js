@@ -12,13 +12,30 @@ export async function fetchEdgeVoices(proxyUrl) {
       const loc = v.Locale || "";
       return loc.startsWith("en-") || loc.startsWith("tr-");
     })
-    .map((v) => ({
-      id: v.ShortName,
-      name: `${v.FriendlyName || v.ShortName}`,
-      locale: v.Locale,
-      gender: v.Gender,
-    }))
-    .sort((a, b) => a.name.localeCompare(b.name));
+    .map((v) => {
+      const raw = v.FriendlyName || v.ShortName;
+      const m = raw.match(/^Microsoft\s+(.+?)\s+Online\s+\(([^)]+)\)\s*-\s*(.+)$/);
+      const genderPart = v.Gender ? ` (${v.Gender})` : "";
+      const name = m
+        ? `${m[3]}${genderPart} ${m[1]} - Microsoft (${m[2]})`
+        : `${raw}${genderPart}`;
+      return {
+        id: v.ShortName,
+        name,
+        locale: v.Locale,
+      };
+    })
+    .sort((a, b) => {
+      const aTr = (a.locale || "").startsWith("tr-");
+      const bTr = (b.locale || "").startsWith("tr-");
+      if (aTr !== bTr) return aTr ? -1 : 1;
+
+      const aEric = a.id === "en-US-EricNeural";
+      const bEric = b.id === "en-US-EricNeural";
+      if (aEric !== bEric) return aEric ? -1 : 1;
+
+      return a.name.localeCompare(b.name);
+    });
 }
 
 /**

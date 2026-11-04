@@ -326,7 +326,7 @@ async function synthesizeChunkOnce(text, voice, rate) {
 
   const ws = resp.webSocket;
   if (!ws) throw new Error("WebSocket upgrade failed");
-  try { ws.binaryType = "arraybuffer"; } catch (_) {}
+  try { ws.binaryType = "arraybuffer"; } catch (_) { }
   ws.accept();
 
   return new Promise((resolve, reject) => {
@@ -339,7 +339,7 @@ async function synthesizeChunkOnce(text, voice, rate) {
     const resetTimeout = () => {
       if (timeout) clearTimeout(timeout);
       timeout = setTimeout(() => {
-        if (!done) { done = true; try { ws.close(); } catch (_) {} reject(new Error("Timeout")); }
+        if (!done) { done = true; try { ws.close(); } catch (_) { } reject(new Error("Timeout")); }
       }, IDLE_TIMEOUT_MS);
     };
     resetTimeout();
