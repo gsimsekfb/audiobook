@@ -1,6 +1,6 @@
-import { EDGE_PROXY_URL } from "./config.js";
-import { initKokoro, generateKokoro } from "./engines/kokoro.js";
-import { fetchEdgeVoices, generateEdge } from "./engines/edge.js";
+import { EDGE_PROXY_URL } from "./config.js?v=2";
+import { initKokoro, generateKokoro } from "./engines/kokoro.js?v=2";
+import { fetchEdgeVoices, generateEdge } from "./engines/edge.js?v=2";
 
 // ===== State =====
 let currentEngine = "edge"; // "kokoro" | "edge"
