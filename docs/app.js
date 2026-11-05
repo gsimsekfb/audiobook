@@ -1,12 +1,13 @@
-import { EDGE_PROXY_URL } from "./config.js?v=2";
-import { initKokoro, generateKokoro } from "./engines/kokoro.js?v=2";
-import { fetchEdgeVoices, generateEdge } from "./engines/edge.js?v=2";
+import { EDGE_PROXY_URL } from "./config.js?v=3";
+import { initKokoro, generateKokoro } from "./engines/kokoro.js?v=3";
+import { fetchEdgeVoices, generateEdge } from "./engines/edge.js?v=3";
 
 // ===== State =====
 let currentEngine = "edge"; // "kokoro" | "edge"
 let kokoroTts = null;
 let kokoroVoices = [];
 let edgeVoices = [];
+let selectedVoice = "";
 let isGenerating = false;
 let currentAudioUrl = null;
 
@@ -17,7 +18,10 @@ const els = {};
 document.addEventListener("DOMContentLoaded", () => {
   els.tabKokoro = $("tab-kokoro");
   els.tabEdge = $("tab-edge");
-  els.voiceSelect = $("voice-select");
+  els.voiceSelectWrap = $("voice-select-wrap");
+  els.voiceTrigger = $("voice-trigger");
+  els.voiceTriggerText = $("voice-trigger-text");
+  els.voiceMenu = $("voice-menu");
   els.textInput = $("text-input");
   els.charCount = $("char-count");
   els.convertBtn = $("convert-btn");
@@ -35,6 +39,13 @@ document.addEventListener("DOMContentLoaded", () => {
   // Events
   els.tabKokoro.addEventListener("click", () => switchEngine("kokoro"));
   els.tabEdge.addEventListener("click", () => switchEngine("edge"));
+  els.voiceTrigger.addEventListener("click", toggleVoiceMenu);
+  document.addEventListener("click", (e) => {
+    if (!els.voiceSelectWrap.contains(e.target)) closeVoiceMenu();
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeVoiceMenu();
+  });
   els.textInput.addEventListener("input", updateCharCount);
   els.convertBtn.addEventListener("click", convert);
   els.downloadBtn.addEventListener("click", download);
@@ -50,8 +61,10 @@ async function switchEngine(engine) {
   els.tabKokoro.classList.toggle("active", engine === "kokoro");
   els.tabEdge.classList.toggle("active", engine === "edge");
   els.kokoroNote.style.display = engine === "kokoro" ? "block" : "none";
-  els.voiceSelect.innerHTML = '<option value="">Loading voices…</option>';
-  els.voiceSelect.disabled = true;
+  closeVoiceMenu();
+  els.voiceTriggerText.textContent = "Loading voices…";
+  els.voiceMenu.innerHTML = "";
+  els.voiceTrigger.disabled = true;
 
   try {
     if (engine === "kokoro") {
@@ -78,18 +91,56 @@ async function switchEngine(engine) {
     console.error(err);
   }
 
-  els.voiceSelect.disabled = false;
+  els.voiceTrigger.disabled = false;
 }
 
 function populateVoices(voices, defaultId) {
-  els.voiceSelect.innerHTML = "";
+  els.voiceMenu.innerHTML = "";
+  selectedVoice = "";
   for (const v of voices) {
-    const opt = document.createElement("option");
-    opt.value = v.id;
-    opt.textContent = v.name + (v.gender ? ` (${v.gender})` : "");
-    if (v.id === defaultId) opt.selected = true;
-    els.voiceSelect.appendChild(opt);
+    const label = v.name + (v.gender ? ` (${v.gender})` : "");
+    const li = document.createElement("li");
+    li.className = "select-option";
+    li.setAttribute("role", "option");
+    li.dataset.value = v.id;
+    li.textContent = label;
+    if (v.id === defaultId || !selectedVoice) {
+      selectedVoice = v.id;
+      els.voiceTriggerText.textContent = label;
+    }
+    li.addEventListener("click", () => selectVoiceOption(v.id, label));
+    els.voiceMenu.appendChild(li);
   }
+  updateSelectedOptionUI();
+}
+
+function selectVoiceOption(id, label) {
+  selectedVoice = id;
+  els.voiceTriggerText.textContent = label;
+  updateSelectedOptionUI();
+  closeVoiceMenu();
+}
+
+function updateSelectedOptionUI() {
+  for (const li of els.voiceMenu.children) {
+    const isSel = li.dataset.value === selectedVoice;
+    li.classList.toggle("selected", isSel);
+    li.setAttribute("aria-selected", isSel ? "true" : "false");
+  }
+}
+
+function toggleVoiceMenu() {
+  const isOpen = els.voiceSelectWrap.classList.toggle("open");
+  els.voiceTrigger.setAttribute("aria-expanded", isOpen ? "true" : "false");
+  if (isOpen) {
+    const activeEl = els.voiceMenu.querySelector(".select-option.selected");
+    if (activeEl) activeEl.scrollIntoView({ block: "nearest" });
+  }
+}
+
+function closeVoiceMenu() {
+  els.voiceSelectWrap.classList.remove("open");
+  els.voiceTrigger.setAttribute("aria-expanded", "false");
 }
 
 // ===== Conversion =====
@@ -106,7 +157,7 @@ async function convert() {
   if (currentAudioUrl) { URL.revokeObjectURL(currentAudioUrl); currentAudioUrl = null; }
   setStatus("");
 
-  const voice = els.voiceSelect.value;
+  const voice = selectedVoice;
   const start = Date.now();
 
   try {

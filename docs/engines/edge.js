@@ -17,7 +17,7 @@ export async function fetchEdgeVoices(proxyUrl) {
       const m = raw.match(/^Microsoft\s+(.+?)\s+Online\s+\(([^)]+)\)\s*-\s*(.+)$/);
       const genderPart = v.Gender ? ` (${v.Gender})` : "";
       const name = m
-        ? `${m[3]}${genderPart} ${m[1]} - Microsoft (${m[2]})`
+        ? `${m[3]}${genderPart} ${m[1]}`
         : `${raw}${genderPart}`;
       return {
         id: v.ShortName,

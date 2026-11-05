@@ -5,24 +5,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Text to Speech — Audiobook Tools</title>
   <meta name="description" content="Convert text to natural speech using Kokoro (runs in your browser) or Edge TTS (Microsoft voices). Free, no sign-up." />
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css?v=3" />
 </head>
 <body>
 
   <header class="header">
     <h1>Text to Speech</h1>
-    <p>Kokoro (in-browser) &amp; Edge TTS (Microsoft voices)</p>
+    <p>Edge TTS (Microsoft voices) &amp; Kokoro (in-browser)</p>
   </header>
 
   <main class="card">
 
     <!-- Engine Tabs -->
     <div class="tabs" role="tablist">
-      <button class="tab" id="tab-kokoro" role="tab" aria-selected="false">
-        🧠 Kokoro
-      </button>
       <button class="tab active" id="tab-edge" role="tab" aria-selected="true">
         🔊 Edge TTS
+      </button>
+      <button class="tab" id="tab-kokoro" role="tab" aria-selected="false">
+        🧠 Kokoro
       </button>
     </div>
 
@@ -34,10 +34,14 @@
 
     <!-- Voice -->
     <div class="field">
-      <label for="voice-select">Voice</label>
-      <select id="voice-select">
-        <option value="">Loading…</option>
-      </select>
+      <label id="voice-label">Voice</label>
+      <div class="custom-select" id="voice-select-wrap">
+        <button type="button" class="select-trigger" id="voice-trigger" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="voice-label" disabled>
+          <span id="voice-trigger-text">Loading…</span>
+          <span class="select-arrow">▾</span>
+        </button>
+        <ul class="select-menu" id="voice-menu" role="listbox" aria-labelledby="voice-label"></ul>
+      </div>
     </div>
 
     <!-- Text Input -->
@@ -78,6 +82,6 @@
     Edge TTS: Microsoft Read Aloud (unofficial)
   </footer>
 
-  <script type="module" src="app.js?v=2"></script>
+  <script type="module" src="app.js?v=3"></script>
 </body>
 </html>
