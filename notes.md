@@ -1,7 +1,12 @@
 
 # Voices samples 
-https://json2video.com/ai-voices/azure/languages/english/
 
+## edge-tts:   
+
+// English  
+https://json2video.com/ai-voices/azure/languages/english/    
+// Turkish  
+https://json2video.com/ai-voices/languages/turkish/?gender=&use=&provider=azure  
 
 # Conversion Times
 

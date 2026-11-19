@@ -10,11 +10,9 @@
 
 Web App
 - Apple support
-- edge-tts convert long text
 - Rust version ? w/ copilot and claude
 - Conversion progress stuck at 0% Kokoro, workaround just spinner ?
 - Kokoro model downloading & loading mixed up. Loading shown even when it is downladed ? hint:  ~86 MB .onnx listed under Application → Cache Storage → transformers-cache  
-- Edge-tts not working
 - Browser Page unresponsive popup
 - Mp3 format  
 - ------------  
