@@ -64,7 +64,7 @@
    - The site will be at `https://gsimsekfb.github.io/audiobook/`.
 
 ## Testing before commit
-1. Run `python -m http.server 8000 -d docs` and open `http://localhost:8000`.
+1. Run `python serve.py` (no-cache dev server) and open `http://localhost:8000`.
 2. **Kokoro:** paste lines 1–3 of [8-evm.txt](file:///c:/code/audiobook/ethereum.org%20foundationals/data%20files/8-evm.txt). The first run shows model-download progress. Then Convert, play and download the `.wav`.
 3. **Edge:**
    - Run `npx wrangler dev` in `edge-tts-worker/`, which serves the Worker locally at `http://localhost:8787`, and point `config.js` at it.
