@@ -47,6 +47,14 @@ document.addEventListener("DOMContentLoaded", () => {
     if (e.key === "Escape") closeVoiceMenu();
   });
   els.textInput.addEventListener("input", updateCharCount);
+  const expandBtn = $("expand-btn");
+  expandBtn.addEventListener("click", () => {
+    const on = els.textInput.parentElement.classList.toggle("expanded");
+    expandBtn.textContent = on ? "⤡ Collapse" : "⤢ Expand";
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && els.textInput.parentElement.classList.contains("expanded")) expandBtn.click();
+  });
   els.convertBtn.addEventListener("click", convert);
   els.downloadBtn.addEventListener("click", download);
 
@@ -145,7 +153,7 @@ function closeVoiceMenu() {
 
 // ===== Conversion =====
 async function convert() {
-  const text = els.textInput.value.trim();
+  const text = els.textInput.innerText.trim();
   if (!text) { setStatus("Enter some text first.", true); return; }
   if (isGenerating) return;
 
@@ -204,7 +212,7 @@ function download() {
 
 // ===== UI Helpers =====
 function updateCharCount() {
-  const len = els.textInput.value.length;
+  const len = els.textInput.innerText.length;
   els.charCount.textContent = `${len.toLocaleString()} chars`;
 }
 

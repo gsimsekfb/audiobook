@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Text to Speech — Audiobook Tools</title>
-  <meta name="description" content="Convert text to natural speech using Kokoro (runs in your browser) or Edge TTS (Microsoft voices). Free, no sign-up." />
+  <meta name="description"
+    content="Convert text to natural speech using Kokoro (runs in your browser) or Edge TTS (Microsoft voices). Free, no sign-up." />
   <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
 
   <header class="header">
@@ -36,7 +39,8 @@
     <div class="field">
       <label id="voice-label">Voice</label>
       <div class="custom-select" id="voice-select-wrap">
-        <button type="button" class="select-trigger" id="voice-trigger" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="voice-label" disabled>
+        <button type="button" class="select-trigger" id="voice-trigger" aria-haspopup="listbox" aria-expanded="false"
+          aria-labelledby="voice-label" disabled>
           <span id="voice-trigger-text">Loading…</span>
           <span class="select-arrow">▾</span>
         </button>
@@ -47,8 +51,12 @@
     <!-- Text Input -->
     <div class="field">
       <label for="text-input">Text</label>
-      <textarea id="text-input" placeholder="Paste or type text to convert…"></textarea>
-      <div class="char-count" id="char-count">0 chars</div>
+      <div id="text-input" class="rich-input" contenteditable="true" data-placeholder="Paste or type text to convert…">
+      </div>
+      <div class="input-footer">
+        <button type="button" id="expand-btn" class="expand-btn" title="Expand/collapse">⤢ Expand</button>
+        <div class="char-count" id="char-count">0 chars</div>
+      </div>
     </div>
 
     <!-- Convert -->
@@ -84,4 +92,5 @@
 
   <script type="module" src="app.js"></script>
 </body>
+
 </html>
