@@ -231,6 +231,7 @@ textarea,
   inset: 8px;
   max-width: 1000px;
   height: calc(100vh - 16px);
+  height: calc(100dvh - 16px);
   z-index: 1000;
   margin: 0 auto;
   padding: 1rem;
@@ -245,6 +246,16 @@ textarea,
   flex: 1;
   resize: none;
   overflow-y: auto;
+}
+
+.field.expanded .input-footer {
+  justify-content: flex-end;
+}
+
+.field.expanded .expand-btn {
+  position: absolute;
+  top: 0.7rem;
+  right: 1rem;
 }
 
 .input-footer {
