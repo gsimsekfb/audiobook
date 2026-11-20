@@ -230,3 +230,10 @@ function showProgress(pct) {
 function hideProgress() {
   els.progress.style.display = "none";
 }
+
+// ===== Theme toggle =====
+document.getElementById('theme-btn').onclick = () => {
+  const d = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+  document.documentElement.dataset.theme = d;
+  localStorage.theme = d;
+};

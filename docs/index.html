@@ -8,11 +8,13 @@
   <meta name="description"
     content="Convert text to natural speech using Kokoro (runs in your browser) or Edge TTS (Microsoft voices). Free, no sign-up." />
   <link rel="stylesheet" href="style.css" />
+  <script>document.documentElement.dataset.theme = localStorage.theme || 'light';</script>
 </head>
 
 <body>
 
   <header class="header">
+    <button id="theme-btn" type="button" title="Toggle theme">🌓 Toggle Theme</button>
     <h1>Text to Speech</h1>
     <p>Edge TTS (Microsoft voices) &amp; Kokoro (in-browser)</p>
   </header>

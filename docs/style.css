@@ -1,6 +1,23 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
 
 :root {
+  color-scheme: light;
+  --bg: #f5f6fa;
+  --surface: #ffffff;
+  --surface2: #eef0f6;
+  --border: #d5d8e3;
+  --text: #1a1b25;
+  --text2: #5f6275;
+  --accent: #7c5cfc;
+  --accent2: #6941e0;
+  --accent-glow: rgba(124, 92, 252, 0.25);
+  --error: #dc2626;
+  --hover: #e4e7f1;
+  --radius: 12px;
+  --transition: 0.2s ease;
+}
+
+[data-theme="dark"] {
   color-scheme: dark;
   --bg: #0c0d11;
   --surface: #15161d;
@@ -8,12 +25,22 @@
   --border: #2a2b38;
   --text: #e4e5ed;
   --text2: #8b8d9e;
-  --accent: #7c5cfc;
   --accent2: #a78bfa;
-  --accent-glow: rgba(124, 92, 252, 0.25);
   --error: #f87171;
-  --radius: 12px;
-  --transition: 0.2s ease;
+  --hover: #22232f;
+}
+
+#theme-btn {
+  position: absolute;
+  top: 0.75rem;
+  right: 1rem;
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-size: 0.8rem;
+  cursor: pointer;
 }
 
 * {
@@ -34,8 +61,11 @@ body {
 
 /* ===== Header ===== */
 .header {
+  position: relative;
+  width: 100%;
+  max-width: 1000px;
   text-align: center;
-  padding: 2.5rem 1rem 1rem;
+  padding: 2.75rem 1rem 1rem;
 }
 
 .header h1 {
@@ -89,7 +119,7 @@ body {
 }
 
 .tab:hover {
-  background: #22232f;
+  background: var(--hover);
   color: var(--text);
 }
 
@@ -205,7 +235,7 @@ textarea:focus,
 }
 
 .select-option:hover {
-  background: #252636;
+  background: var(--hover);
 }
 
 .select-option.selected {
