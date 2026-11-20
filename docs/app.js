@@ -1,4 +1,4 @@
-﻿import { EDGE_PROXY_URL } from "./config.js";
+import { EDGE_PROXY_URL } from "./config.js";
 import { initKokoro, generateKokoro } from "./engines/kokoro.js";
 import { fetchEdgeVoices, generateEdge } from "./engines/edge.js";
 
@@ -232,8 +232,10 @@ function hideProgress() {
 }
 
 // ===== Theme toggle =====
-document.getElementById('theme-btn').onclick = () => {
-  const d = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
-  document.documentElement.dataset.theme = d;
-  localStorage.theme = d;
-};
+document.querySelectorAll('.theme-btn').forEach(btn => {
+  btn.onclick = () => {
+    const d = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+    document.documentElement.dataset.theme = d;
+    localStorage.theme = d;
+  };
+});

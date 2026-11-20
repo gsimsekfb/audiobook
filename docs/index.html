@@ -14,7 +14,7 @@
 <body>
 
   <header class="header">
-    <button id="theme-btn" type="button" title="Toggle theme">🌓 Toggle Theme</button>
+    <button id="theme-btn" class="theme-btn" type="button" title="Toggle theme">🌓 Toggle Theme</button>
     <h1>Text to Speech</h1>
     <p>Edge TTS (Microsoft voices) &amp; Kokoro (in-browser)</p>
   </header>
@@ -86,10 +86,26 @@
 
   </main>
 
+  <div class="mobile-theme-row">
+    <button id="theme-btn-mobile" class="theme-btn" type="button" title="Toggle theme">🌓 Toggle Theme</button>
+  </div>
+
   <footer class="footer">
-    Kokoro: <a href="https://huggingface.co/hexgrad/Kokoro-82M" target="_blank">Kokoro-82M</a> via
-    <a href="https://github.com/huggingface/transformers.js" target="_blank">kokoro-js</a> &middot;
-    Edge TTS: Microsoft Read Aloud (unofficial)
+    <div class="footer-links">
+      Made by <a href="https://github.com/gsimsekfb" target="_blank" rel="noopener noreferrer">gsimsekfb</a> &middot;
+      <a href="https://github.com/gsimsekfb/audiobook" target="_blank" rel="noopener noreferrer">Source Code</a>
+    </div>
+    <div class="footer-credits">
+      <div>
+        Kokoro: <a href="https://huggingface.co/hexgrad/Kokoro-82M" target="_blank"
+          rel="noopener noreferrer">Kokoro-82M</a> via
+        <a href="https://github.com/huggingface/transformers.js" target="_blank" rel="noopener noreferrer">kokoro-js</a>
+      </div>
+      <div>
+        Edge TTS: Microsoft Read Aloud (via JS port of
+        <a href="https://github.com/rany2/edge-tts" target="_blank" rel="noopener noreferrer">edge-tts</a>)
+      </div>
+    </div>
   </footer>
 
   <script type="module" src="app.js"></script>

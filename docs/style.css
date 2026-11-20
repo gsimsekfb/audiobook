@@ -30,10 +30,7 @@
   --hover: #22232f;
 }
 
-#theme-btn {
-  position: absolute;
-  top: 0.75rem;
-  right: 1rem;
+.theme-btn {
   background: var(--surface);
   color: var(--text);
   border: 1px solid var(--border);
@@ -41,6 +38,16 @@
   padding: 6px 10px;
   font-size: 0.8rem;
   cursor: pointer;
+}
+
+#theme-btn {
+  position: absolute;
+  top: 0.75rem;
+  right: 1rem;
+}
+
+.mobile-theme-row {
+  display: none;
 }
 
 * {
@@ -461,11 +468,16 @@ audio {
 
 /* ===== Footer ===== */
 .footer {
-  margin-top: auto;
-  padding: 1.5rem;
+  margin-top: 0.5rem;
+  padding: 0.75rem 1.5rem 2rem;
   font-size: 0.72rem;
+  line-height: 1.6;
   color: var(--text2);
   text-align: center;
+}
+
+.footer-links {
+  margin-bottom: 0.35rem;
 }
 
 .footer a {
@@ -479,6 +491,22 @@ audio {
 
 /* ===== Responsive ===== */
 @media (max-width: 680px) {
+  #theme-btn {
+    display: none;
+  }
+
+  .mobile-theme-row {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    padding: 0 0.5rem;
+    margin-top: 0.25rem;
+  }
+
+  .header {
+    padding-top: 1.5rem;
+  }
+
   .card {
     margin: 0.5rem;
     padding: 1rem;
