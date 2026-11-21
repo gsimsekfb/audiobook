@@ -6,4 +6,4 @@
 
 - Always tell me what you will do first. Do not start any work without my approval.
 
-- For local testing of `docs/`, use `python serve.py` (sends `Cache-Control: no-store`); no `?v=N` cache-busting is used.
+- Always one sentence summary per task or sub-task/item for one prompt reply.
